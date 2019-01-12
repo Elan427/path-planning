@@ -1,0 +1,2789 @@
+//#include <cstdlib>  // new
+//#include <cstdio>   // new
+#include <iostream>
+//#include <iomanip>
+#include <queue>
+//#include <string>
+#include <math.h>
+//#include <ctime>
+using namespace std;char EularScientistOrientation='E';
+char OmarScientistOrientation='S';
+// eular scientist =68
+// eular safe zone=88
+//omar khyam scientist=78
+// omar khyam safezone=98
+
+
+char EularSafeZoneOrientation='N';
+char OmarSafeZoneOrientation='E';
+//------------------------- x&y cooridnates of eular safe zone
+int xesz=4+1;
+int yesz=3+1;
+//------------------------- x&y cooridnates of omar safe zone
+int xosz=4.5+1.5;
+int yosz=5+1;
+//------------------------- x&y cooridnates of eular scientist
+int xes=2+1;
+int yes=4+1;
+//------------------------- x&y cooridnates of omar scientist
+int xos=0+1;
+int yos=7+1;
+//-------------------------------------------
+
+int gx=4;  // x coordinate
+int gy=0; // y coordinate
+int wn=1; // weights of north from sensors
+int we=1; // weights of EAST from sensors
+int wws=9;
+int ww=3;
+int Xaxis=1;
+int Yaxis=1;
+char colour='B';
+void MakeNArray();
+void MakeSArray();
+void MakeEArray();
+void MakeWArray();
+void spreading(int, int, int);
+void spreadingSouth(int, int, int);
+void spreadingEast(int,int,int);
+void spreadingWest(int,int,int);
+int getv(int,int,int);
+int getSouthv(int,int,int);
+int getEastv(int,int,int);
+int getWestv(int,int,int);
+void North();
+void South();
+void East();
+void West();
+
+int OrignalArray [13][7]  =
+				   {{666, 666,  666,    666,    666,    666,  666},
+                   {666,   1,    1,    797,      707,    777,  666},
+                   {666,   1,    1,    707,      707,    777,  666},
+                   {666,   1,    1,    797,      707,    797,  666},
+                   {666,   1,    1,      1,      1,   	 1,  666},
+                   {666,   808,  898,    898,    1,  	 1,  666},
+                   {666,   808,  888,    898,    1,    1,  666},
+                   {666,   808,  898,    898,    1,  	 1,  666},
+                   {666,   1,    1,      1,      1,  	 1,  666},
+                   {666,   1,    1,    595,    505,    595,  666},
+                   {666,   1,    1,    505,    505,    555,  666},
+                   {666,   1,    1,    595,    505,    555,  666},
+                   {666, 666,  666,    666,    666,    666,  666}
+                   };
+int NewRedArray [13][7]  =
+				  {{666, 666,  666,    666,    666,    666,  666},
+                   {666,   777,    777,      1,      1,    1,  666},
+                   {666,   1,    1,      1,      1,    1,  666},
+                   {666,   777,    777,      1,      1,    1,  666},
+                   {666,  777,    777,      777,      777,   	 777,  666},
+                   {666,   1,    1,      1,      777,  	 777,  666},
+                   {666,   1,    1,      1,      777,    777,  666},
+                   {666,   1,    1,      1,      777,  	 777,  666},
+                   {666,   777,    777,      777,      1,  	 777,  666},
+                   {666,  777,    777,      1,      1,    1,  666},
+                   {666,   1,    1,      1,      1,    1,  666},
+                   {666,   777,    777,      1,      1,    1,  666},
+                   {666, 666,  666,    666,    666,    666,  666}
+                   };
+int EditedArray[13][7];
+int SouthArraySpreading[13][7];
+int EastArraySpreading[13][7];
+int WestArraySpreading[13][7];
+//--------------------------------------------------------------------------
+int NewArray [13][7]  =
+				  {{666, 666,  666,    666,    666,    666,  666},
+                   {666,   1,    777,      1,      1,    1,  666},
+                   {666,   1,    777,      1,      1,    1,  666},
+                   {666,   1,    777,      1,      1,    1,  666},
+                   {666,   1,    777,      777,      1,   	 777,  666},
+                   {666,   1,    1,      1,      1,  	 777,  666},
+                   {666,   1,    1,      1,      1,    777,  666},
+                   {666,   1,    1,      1,      1,  	 777,  666},
+                   {666,   1,    777,      777,      1,  	 777,  666},
+                   {666,   1,    777,      1,      1,    1,  666},
+                   {666,   1,    777,      1,      1,    1,  666},
+                   {666,   1,    777,      1,      1,    1,  666},
+                   {666, 666,  666,    666,    666,    666,  666}
+                   };
+int RedNorthArray[13][7];
+int RedSouthArray[13][7];
+int RedEastArray[13][7];
+int RedWestArray[13][7];
+void spreadingRedNorth(int, int, int);
+void spreadingRedSouth(int, int, int);
+void spreadingRedEast(int, int, int);
+void spreadingRedWest(int, int, int);
+int getRedNorthv(int, int, int);
+int getRedSouthv(int, int, int);
+int getRedEastv(int, int, int);
+int getRedWestv(int, int, int);
+void MakeRedNorthArray();
+void MakeRedSouthArray();
+void MakeRedEastArray();
+void MakeRedWestArray();
+void RedNorth();
+void RedSouth();
+void RedEast();
+void RedWest();
+//--------------------------------------------------------------------
+void GetGy();
+
+//---------------------------------------------------------------------------------
+
+#define MAXx 7
+#define MAXy 13
+#define MAXex 7
+#define MAXey 13
+int mark[MAXy][MAXx] = {};
+// red color 777
+// yellow  888
+// blue    555
+// boundary 666
+// shared 911
+
+const int n=6; // horizontal size of the map
+const int m=15; // vertical size size of the map
+static int map[n][m];
+static int closed_nodes_map[n][m]; // map of closed (tried-out) nodes
+static int open_nodes_map[n][m]; // map of open (not-yet-tried) nodes
+static int dir_map[n][m]; // map of directions
+const int dir=4; // number of possible directions to go at any position
+// if dir==4
+static int dx[dir]={1, 0, -1, 0};
+static int dy[dir]={0, 1, 0, -1};
+// if dir==8
+//static int dx[dir]={1, 1, 0, -1, -1, -1, 0, 1};
+//static int dy[dir]={0, 1, 1, 1, 0, -1, -1, -1};
+
+class node
+{
+    // current position
+    int xPos;
+    int yPos;
+    // total distance already travelled to reach the node
+    int level;
+    // priority=level+remaining distance estimate
+    int priority;  // smaller: higher priority
+
+    public:
+        node(int xp, int yp, int d, int p)
+            {xPos=xp; yPos=yp; level=d; priority=p;}
+
+        int getxPos() const {return xPos;}
+        int getyPos() const {return yPos;}
+        int getLevel() const {return level;}
+        int getPriority() const {return priority;}
+
+        void updatePriority(const int & xDest, const int & yDest)
+        {
+             priority=level+estimate(xDest, yDest)*10; //A*
+        }
+
+        // give better priority to going strait instead of diagonally
+        void nextLevel(const int & i) // i: direction
+        {
+             level+=(dir==8?(i%2==0?10:14):10);
+        }
+
+        // Estimation function for the remaining distance to the goal.
+        const int & estimate(const int & xDest, const int & yDest) const
+        {
+            static int xd, yd, d;
+            xd=xDest-xPos;
+            yd=yDest-yPos;
+
+            // Euclidian Distance
+            d=static_cast<int>(sqrt(xd*xd+yd*yd));
+
+            // Manhattan distance
+            //d=abs(xd)+abs(yd);
+
+            // Chebyshev distance
+            //d=max(abs(xd), abs(yd));
+
+            return(d);
+        }
+};
+
+// Determine priority (in the priority queue)
+bool operator<(const node & a, const node & b)
+{
+  return a.getPriority() > b.getPriority();
+}
+
+// A-star algorithm.
+// The route returned is a string of direction digits.
+string pathFind( const int & xStart, const int & yStart,
+                 const int & xFinish, const int & yFinish )
+{
+    static priority_queue<node> pq[2]; // list of open (not-yet-tried) nodes
+    static int pqi; // pq index
+    static node* n0;
+    static node* m0;
+    static int i, j, x, y, xdx, ydy;
+    static char c;
+    pqi=0;
+
+    // reset the node maps
+    for(y=0;y<m;y++)
+    {
+        for(x=0;x<n;x++)
+        {
+            closed_nodes_map[x][y]=0;
+            open_nodes_map[x][y]=0;
+        }
+    }
+
+    // create the start node and push into list of open nodes
+    n0=new node(xStart, yStart, 0, 0);
+    n0->updatePriority(xFinish, yFinish);
+    pq[pqi].push(*n0);
+    open_nodes_map[x][y]=n0->getPriority(); // mark it on the open nodes map
+	delete n0; //added by someone
+    // A* search
+    while(!pq[pqi].empty())
+    {
+        // get the current node w/ the highest priority
+        // from the list of open nodes
+        n0=new node( pq[pqi].top().getxPos(), pq[pqi].top().getyPos(),
+                     pq[pqi].top().getLevel(), pq[pqi].top().getPriority());
+
+        x=n0->getxPos(); y=n0->getyPos();
+
+        pq[pqi].pop(); // remove the node from the open list
+        open_nodes_map[x][y]=0;
+        // mark it on the closed nodes map
+        closed_nodes_map[x][y]=1;
+
+        // quit searching when the goal state is reached
+        //if((*n0).estimate(xFinish, yFinish) == 0)
+        if(x==xFinish && y==yFinish)
+        {
+            // generate the path from finish to start
+            // by following the directions
+            string path="";
+            while(!(x==xStart && y==yStart))
+            {
+                j=dir_map[x][y];
+                c='0'+(j+dir/2)%dir;
+                path=c+path;
+                x+=dx[j];
+                y+=dy[j];
+            }
+
+            // garbage collection
+            delete n0;
+            // empty the leftover nodes
+            while(!pq[pqi].empty()) pq[pqi].pop();
+            return path;
+        }
+
+        // generate moves (child nodes) in all possible directions
+        for(i=0;i<dir;i++)
+        {
+            xdx=x+dx[i]; ydy=y+dy[i];
+
+            if(!(xdx<0 || xdx>n-1 || ydy<0 || ydy>m-1 || map[xdx][ydy]==1
+                || closed_nodes_map[xdx][ydy]==1))
+            {
+                // generate a child node
+                m0=new node( xdx, ydy, n0->getLevel(),
+                             n0->getPriority());
+                m0->nextLevel(i);
+                m0->updatePriority(xFinish, yFinish);
+
+                // if it is not in the open list then add into that
+                if(open_nodes_map[xdx][ydy]==0)
+                {
+                    open_nodes_map[xdx][ydy]=m0->getPriority();
+                    pq[pqi].push(*m0);
+                    delete m0; // Only <-- new added by commenter // mark its parent node direction
+                    dir_map[xdx][ydy]=(i+dir/2)%dir;
+                }
+                else if(open_nodes_map[xdx][ydy]>m0->getPriority())
+                {
+                    // update the priority info
+                    open_nodes_map[xdx][ydy]=m0->getPriority();
+                    // update the parent direction info
+                    dir_map[xdx][ydy]=(i+dir/2)%dir;
+
+                    // replace the node
+                    // by emptying one pq to the other one
+                    // except the node to be replaced will be ignored
+                    // and the new node will be pushed in instead
+                    while(!(pq[pqi].top().getxPos()==xdx &&
+                           pq[pqi].top().getyPos()==ydy))
+                    {
+                        pq[1-pqi].push(pq[pqi].top());
+                        pq[pqi].pop();
+                    }
+                    pq[pqi].pop(); // remove the wanted node
+
+                    // empty the larger size pq to the smaller one
+                    if(pq[pqi].size()>pq[1-pqi].size()) pqi=1-pqi;
+                    while(!pq[pqi].empty())
+                    {
+                        pq[1-pqi].push(pq[pqi].top());
+                        pq[pqi].pop();
+                    }
+                    pqi=1-pqi;
+                    pq[pqi].push(*m0); delete m0; // only 2nd item added new // add the better node instead
+                }
+                else delete m0; // garbage collection
+            }
+        }
+        delete n0; // garbage collection
+    }
+    return ""; // no route found
+}
+
+class good
+{
+	friend class node;
+    //srand(time(NULL));
+
+    // create empty map
+	public:
+	good(int sxx, int syy, int dxx, int dyy, int sxes, int syes, int sxos, int syos, int sxesz, int syesz, int sxosz, int syosz)
+	{
+		 for(int y=0;y<m;y++)
+		    {
+		        for(int x=0;x<n;x++) map[x][y]=0;
+		    }
+
+		    map[2][0]=1;map[2][1]=0;map[2][2]=1;map[2][3]=1;
+		    map[2][3]=1;map[3][3]=1;map[4][3]=0;map[5][3]=1;
+		   // map[5][0]=1;map[5][1]=1;map[5][2]=1;
+
+		    map[0][5]=0;map[1][5]=1;map[2][5]=1;;map[3][5]=1;
+		    map[0][6]=0;map[1][6]=0;map[2][6]=0;map[3][6]=1;
+		    map[0][7]=0;map[1][7]=0;map[2][7]=0;map[3][7]=1;
+	        map[0][8]=0;map[1][8]=0;map[2][8]=0;map[3][8]=1;
+		    map[0][9]=0;map[1][9]=1;map[2][9]=1;;map[3][9]=1;
+
+
+		    map[2][11]=1;map[2][12]=1;map[2][13]=0;map[2][14]=1;
+		    map[3][11]=1;map[3][12]=0;map[3][13]=0;map[3][14]=0;
+			map[5][11]=1;
+			
+	map[sxesz][syesz]=1;
+	map[sxosz][syosz]=1;
+	map[sxes][syes]=1;
+	map[sxos][syos]=1;
+	
+		//	map[5][12]=1;map[5][13]=1;map[5][14]=1;
+
+     // map[4][5]=1;
+		    // randomly select start and finish locations
+		    int xA, yA, xB, yB;
+		 xA=sxx;
+		 yA=syy;
+		 xB=dxx;
+		 yB=dyy;
+
+		    cout<<"Map Size (X,Y): "<<n<<","<<m<<endl;
+		    cout<<"Start: "<<xA<<","<<yA<<endl;
+		    cout<<"Finish: "<<xB<<","<<yB<<endl;
+		    // get the route
+
+		    string route=pathFind(xA, yA, xB, yB);
+		     cout<<"Route:"<<endl;
+		    cout<<route<<endl<<endl;
+
+		    // follow the route on the map and display it
+		    if(route.length()>0)
+		    {
+		        int j; char c;
+		        int x=xA;
+		        int y=yA;
+		        map[x][y]=2;
+		        for(int i=0;i<route.length();i++)
+		        {
+		            c =route.at(i);
+		            j=c-'0';  // original --> j=atoi(&c);
+		            x=x+dx[j];
+		            y=y+dy[j];
+		            map[x][y]=3;
+		        }
+		        map[x][y]=4;
+
+		        // display the map with the route
+		        for(int y=0;y<m;y++)
+		        {
+		            for(int x=0;x<n;x++)
+		                if(map[x][y]==0)
+		                    cout<<".";
+		                else if(map[x][y]==1)
+		                    cout<<"O"; //obstacle
+		                else if(map[x][y]==2)
+		                    cout<<"S"; //start
+		                else if(map[x][y]==3)
+		                    cout<<"R"; //route
+		                else if(map[x][y]==4)
+		                    cout<<"F"; //finish
+		            cout<<endl;
+		        }
+		    }
+
+		  for (int cy = 0; cy < m; cy++)
+      {
+      	cout<<"\t";
+		    	for (int cx=0; cx<n; cx++)
+		    	{
+		    		cout<<map[cx][cy]<<"\t";
+
+
+		    	}
+		    	cout<<"\n";
+		    }
+	}
+
+ // getchar(); // wait for a (Enter) keypress
+
+};
+
+bool restricted(int scy, int scx, char os)
+{
+	if((scx==3 && scy ==1 && os=='W')||(scx==3 && scy ==3 && os=='W')||(scx==3 && scy ==3 && os =='N')||(scx==5 && scy ==3 && os=='N'))
+		{
+			return false;
+		}
+	if((scx==3 && scy ==9 && os=='W')||(scx==3 && scy ==9 && os =='S')||(scx==5 && scy ==9 && os=='S')||(scx==3 && scy ==11 && os=='W'))
+		{
+			return false;
+		}
+	if((scx==2 && scy ==5 && os=='S')||(scx==3 && scy ==5 && os =='S')||(scx==3 && scy ==5 && os=='E')||(scx==3 && scy ==6 && os=='E')||(scx==3 && scy ==7 && os=='E') ||(scx==3 && scy ==7 && os=='N')||(scx==2 && scy ==7 && os=='N'))
+		{
+			return false;
+		}
+	if((scx<=2&& scy<=4)||(scx<=5&& scy==4)||(scx==1&& scy<=11)|| (scx>=4&& scy>=4 &&scy<=8)||(scx<=2&& scy>=8))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+
+void RedNorth()
+{
+	MakeRedNorthArray();
+
+		spreadingRedNorth(2,5,getRedNorthv(1,1,0));
+		spreadingRedNorth(3,5,getRedNorthv(1,1,0));
+		//spreadingRedNorth(3,1,getRedNorthv(1,1,0));
+		spreadingRedNorth(3,9,getRedNorthv(1,1,0));
+		spreadingRedNorth(5,9,getRedNorthv(1,1,0));
+
+			for (int i=12; i>=0; i--)
+			{
+				for (int j=0; j<7; j++)
+				{
+
+					cout<<RedNorthArray[i][j]<<"\t";
+				}
+				cout<<"\n";
+			}
+
+			cout<<"\n \n";
+}
+
+void RedSouth()
+{
+
+	MakeRedSouthArray();
+
+	spreadingRedSouth(2,5,getRedSouthv(1,1,0));
+	spreadingRedSouth(3,5,getRedSouthv(1,1,0));
+	//spreadingRedSouth(3,1,getRedSouthv(1,1,0));
+	spreadingRedSouth(3,9,getRedSouthv(1,1,0));
+	spreadingRedSouth(5,9,getRedSouthv(1,1,0));
+
+		for (int i=12; i>=0; i--)
+		{
+			for (int j=0; j<7; j++)
+			{
+
+				cout<<RedSouthArray[i][j]<<"\t";
+			}
+			cout<<"\n";
+		}
+
+		cout<<"\n \n";
+}
+
+void RedEast()
+{
+	MakeRedEastArray();
+
+		spreadingRedEast(2,5,getRedEastv(1,1,0));
+		spreadingRedEast(3,5,getRedEastv(1,1,0));
+		spreadingRedEast(3,1,getRedEastv(1,1,0));
+		spreadingRedEast(3,9,getRedEastv(1,1,0));
+		spreadingRedEast(1,10,getRedEastv(1,1,0));
+		spreadingRedEast(5,9,getRedEastv(1,1,0));
+		RedEastArray[8][4]=777;
+			for (int i=12; i>=0; i--)
+			{
+				for (int j=0; j<7; j++)
+				{
+
+					cout<<RedEastArray[i][j]<<"\t";
+
+				}
+				cout<<"\n";
+			}
+
+			cout<<"\n \n";
+}
+
+void RedWest()
+{
+
+	MakeRedWestArray();
+
+	spreadingRedWest(2,5,getRedWestv(1,1,0));
+	spreadingRedWest(3,5,getRedWestv(1,1,0));
+	spreadingRedWest(3,1,getRedWestv(1,1,0));
+	spreadingRedWest(3,9,getRedWestv(1,1,0));
+	spreadingRedWest(1,10,getRedWestv(1,1,0));
+	spreadingRedWest(5,9,getRedWestv(1,1,0));
+	RedWestArray[8][4]=777;
+		for (int i=12; i>=0; i--)
+		{
+			for (int j=0; j<7; j++)
+			{
+
+				cout<<RedWestArray[i][j]<<"\t";
+
+			}
+			cout<<"\n";
+		}
+
+		cout<<"\n \n";
+
+}
+//-------------------------------------------------------------------------------------------------------------------
+
+void MakeRedNorthArray()
+{
+	for (int i=0; i<13; i++)
+		{
+			for (int j=0; j<7; j++)
+			{
+				RedNorthArray[i][j]=NewArray[i][j];
+				//cout<<NewArray[i][j]<<"\t";
+			}
+			cout<<"\n";
+		}
+
+		for(int r=0; r<7; r++)
+		{
+			if ((r!=xes)||(r!=xesz)||(r!=xos)||(r!=xosz))
+			{
+
+				spreadingRedNorth(r,1,getRedNorthv(1,1,0));
+			}
+		}
+
+cout <<"orignal array for red\n";
+
+
+cout <<"\nEdited red north Array\n\n";
+
+if(EularScientistOrientation=='N'&&restricted(yes,xes,EularScientistOrientation )==false)
+{
+
+	RedNorthArray[yes][xes]=1;
+	RedNorthArray[yes][xes]=68;
+	spreadingRedNorth(xes,yes+1,getRedNorthv(xes,yes,1));
+	spreadingRedNorth(xes,yes-yes+1,getRedNorthv(xes,yes,1));
+
+	}
+else
+{
+
+RedNorthArray[yes][xes]=68;
+spreadingRedNorth(xes,yes+1,getRedNorthv(xes,yes,1));
+spreadingRedNorth(xes,yes-yes+1,getRedNorthv(xes,yes,1));
+}
+
+if(EularSafeZoneOrientation=='N'&& restricted(yesz,xesz,EularSafeZoneOrientation )==false)
+{
+
+		RedNorthArray[yesz][xesz]=1;
+	RedNorthArray[yesz][xesz]=88;
+	spreadingRedNorth(xesz,yesz+1,getRedNorthv(xesz,yesz,1));
+	spreadingRedNorth(xesz,yesz-yesz+1,getRedNorthv(xesz,yesz,1));
+
+	}
+else
+{
+RedNorthArray[yesz][xesz]=88;
+spreadingRedNorth(xesz,yesz+1,getRedNorthv(xesz,yesz,1));
+spreadingRedNorth(xesz,yesz-yesz+1,getRedNorthv(xesz,yesz,1));
+}
+
+if(OmarScientistOrientation=='N'&&restricted(yos,xos,OmarScientistOrientation )==false)
+{
+
+	RedNorthArray[yos][xos]=1;
+	RedNorthArray[yos][xos]=78;
+	spreadingRedNorth(xos,yos+1,getRedNorthv(xos,yos,1));
+	spreadingRedNorth(xos,yos-yos+1,getRedNorthv(xos,yos,1));
+
+
+}
+else
+{
+
+RedNorthArray[yos][xos]=78;
+spreadingRedNorth(xos,yos+1,getRedNorthv(xos,yos,1));
+spreadingRedNorth(xos,yos-yos+1,getRedNorthv(xos,yos,1));
+}
+
+if (OmarSafeZoneOrientation=='N'&&restricted(yosz,xosz,OmarSafeZoneOrientation )==false)
+{
+
+RedNorthArray[yosz][xosz]=1;
+RedNorthArray[yosz][xosz]=98;
+spreadingRedNorth(xosz,yosz+1,getRedNorthv(xosz,yosz,1));
+spreadingRedNorth(xosz,yosz-yosz+1,getRedNorthv(xosz,yosz,1));
+
+}
+else
+{
+
+RedNorthArray[yosz][xosz]=98;
+
+spreadingRedNorth(xosz,yosz+1,getRedNorthv(xosz,yosz,1));
+spreadingRedNorth(xosz,yosz-yosz+1,getRedNorthv(xosz,yosz,1));
+}
+// eular scientist =68
+// eular safe zone=88
+//omar khyam scientist=78
+// omar khyam safezone=98
+
+
+for (int i=12; i>=0; i--)
+{
+	for (int j=0; j<7; j++)
+	{
+
+		//cout<<RedNorthArray[i][j]<<"\t";
+	}
+	cout<<"\n";
+}
+
+cout<<"\n \n";
+
+
+}
+
+void MakeRedSouthArray()
+{
+	for (int i=0; i<13; i++)
+		{
+			for (int j=0; j<7; j++)
+			{
+				RedSouthArray[i][j]=NewArray[i][j];
+			//	cout<<NewArray[i][j]<<"\t";
+			}
+			cout<<"\n";
+		}
+
+		for(int r=0; r<7; r++)
+		{
+			if ((r!=xes)||(r!=xesz)||(r!=xos)||(r!=xosz))
+			{
+
+				spreadingRedSouth(r,1,getRedSouthv(1,1,0));
+			}
+		}
+
+cout <<"orignal array for red\n";
+
+
+cout <<"\nEdited red South Array\n\n";
+
+if(EularScientistOrientation=='S'&& restricted(yes,xes,EularScientistOrientation )==false)
+{
+
+	RedSouthArray[yes][xes]=1;
+	RedSouthArray[yes][xes]=68;
+	spreadingRedSouth(xes,yes+1,getRedSouthv(xes,yes,1));
+	spreadingRedSouth(xes,yes-yes+1,getRedSouthv(xes,yes,1));
+
+
+}
+else
+{
+
+RedSouthArray[yes][xes]=68;
+spreadingRedSouth(xes,yes+1,getRedSouthv(xes,yes,1));
+spreadingRedSouth(xes,yes-yes+1,getRedSouthv(xes,yes,1));
+}
+
+if(EularSafeZoneOrientation=='S'&&restricted(yesz,xesz,EularSafeZoneOrientation )==false)
+{
+
+	RedSouthArray[yesz][xesz]=1;
+	RedSouthArray[yesz][xesz]=88;
+	spreadingRedSouth(xesz,yesz+1,getRedSouthv(xesz,yesz,1));
+	spreadingRedSouth(xesz,yesz-yesz+1,getRedSouthv(xesz,yesz,1));
+
+
+}
+else
+{
+RedSouthArray[yesz][xesz]=88;
+spreadingRedSouth(xesz,yesz+1,getRedSouthv(xesz,yesz,1));
+spreadingRedSouth(xesz,yesz-yesz+1,getRedSouthv(xesz,yesz,1));
+}
+
+if(OmarScientistOrientation=='S'&&restricted(yos,xos,OmarScientistOrientation )==false)
+{
+
+	RedSouthArray[yos][xos]=1;
+	RedSouthArray[yos][xos]=78;
+	spreadingRedSouth(xos,yos+1,getRedSouthv(xos,yos,1));
+	spreadingRedSouth(xos,yos-yos+1,getRedSouthv(xos,yos,1));
+
+
+}
+else
+{
+
+RedSouthArray[yos][xos]=78;
+spreadingRedSouth(xos,yos+1,getRedSouthv(xos,yos,1));
+spreadingRedSouth(xos,yos-yos+1,getRedSouthv(xos,yos,1));
+}
+
+if (OmarSafeZoneOrientation=='S'&& restricted(yosz,xosz,OmarSafeZoneOrientation )==false)
+{
+
+RedSouthArray[yosz][xosz]=1;
+RedSouthArray[yosz][xosz]=98;
+spreadingRedSouth(xosz,yosz+1,getRedSouthv(xosz,yosz,1));
+spreadingRedSouth(xosz,yosz-yosz+1,getRedSouthv(xosz,yosz,1));
+
+}
+else
+{
+
+RedSouthArray[yosz][xosz]=98;
+
+spreadingRedSouth(xosz,yosz+1,getRedSouthv(xosz,yosz,1));
+spreadingRedSouth(xosz,yosz-yosz+1,getRedSouthv(xosz,yosz,1));
+}
+
+// eular scientist =68
+// eular safe zone=88
+//omar khyam scientist=78
+// omar khyam safezone=98
+
+
+for (int i=12; i>=0; i--)
+{
+	for (int j=0; j<7; j++)
+	{
+
+		//cout<<RedSouthArray[i][j]<<"\t";
+	}
+	cout<<"\n";
+}
+
+cout<<"\n \n";
+
+
+}
+
+
+void MakeRedEastArray()
+{
+	for (int i=0; i<13; i++)
+		{
+			for (int j=0; j<7; j++)
+			{
+				RedEastArray[i][j]=NewRedArray[i][j];
+			//	cout<<NewRedArray[i][j]<<"\t";
+			}
+			cout<<"\n";
+		}
+
+		for(int r=0; r<13; r++)
+		{
+			if ((r!=yes)||(r!=yesz)||(r!=yos)||(r!=yosz))
+			{
+
+				spreadingRedEast(1,r,getRedEastv(1,1,0));
+			}
+		}
+
+cout <<"orignal array for red\n";
+
+
+cout <<"\nEdited red East Array\n\n";
+if(EularScientistOrientation=='E'&& restricted(yes,xes,EularScientistOrientation )==false)
+{
+	RedEastArray[yes][xes]=1;
+	RedEastArray[yes][xes]=68;
+	spreadingRedEast(xes+1,yes+1,getRedEastv(xes,yes,1));
+	spreadingRedEast(xes+1,yes-yes+1,getRedEastv(xes,yes,1));
+	spreadingRedEast(xes-1,yes,getRedEastv(xes,yes,1));
+}
+else
+{
+
+RedEastArray[yes][xes]=68;
+spreadingRedEast(xes,yes+1,getRedEastv(xes,yes,1));
+spreadingRedEast(xes,yes-yes+1,getRedEastv(xes,yes,1));
+}
+
+if(EularSafeZoneOrientation=='E' && restricted(yesz,xesz,EularSafeZoneOrientation )==false)
+{
+	RedEastArray[yesz][xesz]=1;
+	RedEastArray[yesz][xesz]=88;
+	spreadingRedEast(xesz-1,yesz,getRedEastv(xesz,yesz,1));
+	spreadingRedEast(xesz+1,yesz+1,getRedEastv(xesz,yesz,1));
+	spreadingRedEast(xesz+1,yesz-yesz+1,getRedEastv(xesz,yesz,1));
+}
+else
+{
+RedEastArray[yesz][xesz]=88;
+spreadingRedEast(xesz,yesz+1,getRedEastv(xesz,yesz,1));
+spreadingRedEast(xesz,yesz-yesz+1,getRedEastv(xesz,yesz,1));
+}
+
+if(OmarScientistOrientation=='E'&& restricted(yos,xos,OmarScientistOrientation )==false)
+{
+	RedEastArray[yos][xos]=1;
+	RedEastArray[yos][xos]=78;
+	spreadingRedEast(xos-1,yos,getRedEastv(xos,yos,1));
+	spreadingRedEast(xos+1,yos+1,getRedEastv(xos,yos,1));
+	spreadingRedEast(xos+1,yos-yos+1,getRedEastv(xos,yos,1));
+}
+else
+{
+
+RedEastArray[yos][xos]=78;
+spreadingRedEast(xos,yos+1,getRedEastv(xos,yos,1));
+spreadingRedEast(xos,yos-yos+1,getRedEastv(xos,yos,1));
+}
+
+if (OmarSafeZoneOrientation=='E'&& restricted(yosz,xosz,OmarSafeZoneOrientation )==false)
+{
+
+RedEastArray[yosz][xosz]=1;
+RedEastArray[yosz][xosz]=98;
+spreadingRedEast(xosz-1,yosz,getRedEastv(xosz,yosz,1));
+spreadingRedEast(xosz+1,yosz+1,getRedEastv(xosz,yosz,1));
+spreadingRedEast(xosz+1,yosz-yosz+1,getRedEastv(xosz,yosz,1));
+
+}
+else
+{
+
+RedEastArray[yosz][xosz]=98;
+
+spreadingRedEast(xosz,yosz+1,getRedEastv(xosz,yosz,1));
+spreadingRedEast(xosz,yosz-yosz+1,getRedEastv(xosz,yosz,1));
+}
+
+// eular scientist =68
+// eular safe zone=88
+//omar khyam scientist=78
+// omar khyam safezone=98
+
+
+for (int i=12; i>=0; i--)
+{
+	for (int j=0; j<7; j++)
+	{
+
+	//	cout<<RedEastArray[i][j]<<"\t";
+	}
+	cout<<"\n";
+}
+
+cout<<"\n \n";
+
+
+}
+
+
+
+void MakeRedWestArray()
+{
+	for (int i=0; i<13; i++)
+		{
+			for (int j=0; j<7; j++)
+			{
+				RedWestArray[i][j]=NewRedArray[i][j];
+				//cout<<NewRedArray[i][j]<<"\t";
+			}
+			cout<<"\n";
+		}
+
+		for(int r=0; r<13; r++)
+		{
+			if ((r!=yes)||(r!=yesz)||(r!=yos)||(r!=yosz))
+			{
+
+				spreadingRedWest(1,r,getRedWestv(1,1,0));
+			}
+		}
+
+cout <<"orignal array for red\n";
+
+
+if(EularScientistOrientation=='W' && restricted(yes,xes,EularScientistOrientation )==false )
+{
+	RedWestArray[yes][xes]=1;
+	RedWestArray[yes][xes]=68;
+	spreadingRedWest(xes+1,yes,getRedWestv(xes,yes,1));
+	spreadingRedWest(xes-1,yes+1,getRedWestv(xes,yes,1));
+	spreadingRedWest(xes-1,yes-yes+1,getRedWestv(xes,yes,1));
+}
+else
+{
+
+RedWestArray[yes][xes]=68;
+spreadingRedWest(xes,yes+1,getRedWestv(xes,yes,1));
+spreadingRedWest(xes,yes-yes+1,getRedWestv(xes,yes,1));
+}
+
+if(EularSafeZoneOrientation=='W'&& restricted(yesz,xesz,EularSafeZoneOrientation )==false)
+{
+	RedWestArray[yesz][xesz]=1;
+	RedWestArray[yesz][xesz]=88;
+	spreadingRedWest(xesz+1,yesz,getRedWestv(xesz,yesz,1));
+	spreadingRedWest(xesz-1,yesz+1,getRedWestv(xesz,yesz,1));
+	spreadingRedWest(xesz-1,yesz-yesz+1,getRedWestv(xesz,yesz,1));
+}
+else
+{
+RedWestArray[yesz][xesz]=88;
+spreadingRedWest(xesz,yesz+1,getRedWestv(xesz,yesz,1));
+spreadingRedWest(xesz,yesz-yesz+1,getRedWestv(xesz,yesz,1));
+}
+
+if(OmarScientistOrientation=='W'&& restricted(yos,xos,OmarScientistOrientation )==false)
+{
+	RedWestArray[yos][xos]=1;
+	RedWestArray[yos][xos]=78;
+	spreadingRedWest(xos+1,yos,getRedWestv(xos,yos,1));
+	spreadingRedWest(xos-1,yos+1,getRedWestv(xos,yos,1));
+	spreadingRedWest(xos-1,yos-yos+1,getRedWestv(xos,yos,1));
+}
+else
+{
+
+RedWestArray[yos][xos]=78;
+spreadingRedWest(xos,yos+1,getRedWestv(xos,yos,1));
+spreadingRedWest(xos,yos-yos+1,getRedWestv(xos,yos,1));
+}
+
+if (OmarSafeZoneOrientation=='W'&& restricted(yosz,xosz,OmarSafeZoneOrientation )==false)
+{
+
+RedWestArray[yosz][xosz]=1;
+RedWestArray[yosz][xosz]=98;
+spreadingRedWest(xosz+1,yosz,getRedWestv(xosz,yosz,1));
+spreadingRedWest(xosz-1,yosz+1,getRedWestv(xosz,yosz,1));
+spreadingRedWest(xosz-1,yosz-yosz+1,getRedWestv(xosz,yosz,1));
+
+}
+else
+{
+
+RedWestArray[yosz][xosz]=98;
+
+spreadingRedWest(xosz,yosz+1,getRedWestv(xosz,yosz,1));
+spreadingRedWest(xosz,yosz-yosz+1,getRedWestv(xosz,yosz,1));
+}
+
+
+// eular scientist =68
+// eular safe zone=88
+//omar khyam scientist=78
+// omar khyam safezone=98
+
+
+for (int i=12; i>=0; i--)
+{
+	for (int j=0; j<7; j++)
+	{
+
+	//	cout<<RedWestArray[i][j]<<"\t";
+	}
+	cout<<"\n";
+}
+
+cout<<"\n \n";
+
+
+}
+
+//-------------------------------------------------------------------------------------------------------------------
+void spreadingRedNorth(int x, int y, int v)
+{
+	v=getRedNorthv(x,y,v);
+
+	   // if (x < 0 || x == MAXx) return;
+	   // if (y < 0 || y == MAXy) return;
+
+	if (RedNorthArray[y][x]==666) return;
+
+	  if((RedNorthArray[y][x]==98)||(RedNorthArray[y][x]==78)||(RedNorthArray[y][x]==88)||(RedNorthArray[y][x]==68))
+	    {
+
+		  return;
+
+	    }
+	  if ((RedNorthArray[y][x] == 777))
+	  {
+		  return;
+	  }
+
+	  //  if (mark[y][x] != 0 && mark[y][x] <= v)
+	    //    return;
+	    RedNorthArray[y][x] = v;
+	    mark[y][x] = v;
+
+
+	    spreadingRedNorth(x, y + 1, getRedNorthv(x,y,v));
+	    	//    spreadingRedNorth(x + 1, y,getRedNorthv(x,y,v) );
+	    //     spreadingRedNorth(x - 1, y, getRedNorthv(x,y,v));
+	  //  spreadingRedNorth(x, y - 1, getRedNorthv(x,y,v));
+
+}
+
+
+void spreadingRedSouth(int x, int y, int v)
+{
+	v=getRedSouthv(x,y,v);
+
+	   // if (x < 0 || x == MAXx) return;
+	   // if (y < 0 || y == MAXy) return;
+
+	if (RedSouthArray[y][x]==666) return;
+
+	  if((RedSouthArray[y][x]==98)||(RedSouthArray[y][x]==78)||(RedSouthArray[y][x]==88)||(RedSouthArray[y][x]==68))
+	    {
+
+		  return;
+
+	    }
+	  if ((RedSouthArray[y][x] == 777))
+	  {
+		  return;
+	  }
+
+	  //  if (mark[y][x] != 0 && mark[y][x] <= v)
+	    //    return;
+	    RedSouthArray[y][x] = v;
+	    mark[y][x] = v;
+
+
+	    spreadingRedSouth(x, y + 1, getRedSouthv(x,y,v));
+	    	//    spreadingRedSouth(x + 1, y,getRedSouthv(x,y,v) );
+	    //     spreadingRedSouth(x - 1, y, getRedSouthv(x,y,v));
+	  //  spreadingRedSouth(x, y - 1, getRedSouthv(x,y,v));
+
+}
+
+
+
+void spreadingRedEast(int x, int y, int v)
+{
+	v=getRedEastv(x,y,v);
+
+	   // if (x < 0 || x == MAXx) return;
+	   // if (y < 0 || y == MAXy) return;
+
+	if (RedEastArray[y][x]==666) return;
+
+	  if((RedEastArray[y][x]==98)||(RedEastArray[y][x]==78)||(RedEastArray[y][x]==88)||(RedEastArray[y][x]==68))
+	    {
+
+		  return;
+
+	    }
+	  if ((RedEastArray[y][x] == 777))
+	  {
+		  return;
+	  }
+
+	  //  if (mark[y][x] != 0 && mark[y][x] <= v)
+	    //    return;
+	    RedEastArray[y][x] = v;
+	    mark[y][x] = v;
+
+	    spreadingRedEast(x + 1, y,getRedEastv(x,y,v) );
+
+	    spreadingRedEast(x, y + 1, getRedEastv(x,y,v));
+	    //     spreadingRedEast(x - 1, y, getRedEastv(x,y,v));
+	  //  spreadingRedEast(x, y - 1, getRedEastv(x,y,v));
+
+}
+
+void spreadingRedWest(int x, int y, int v)
+{
+	v=getRedWestv(x,y,v);
+
+	   // if (x < 0 || x == MAXx) return;
+	   // if (y < 0 || y == MAXy) return;
+
+	if (RedWestArray[y][x]==666) return;
+
+	  if((RedWestArray[y][x]==98)||(RedWestArray[y][x]==78)||(RedWestArray[y][x]==88)||(RedWestArray[y][x]==68))
+	    {
+
+		  return;
+
+	    }
+	  if ((RedWestArray[y][x] == 777))
+	  {
+		  return;
+	  }
+
+	  //  if (mark[y][x] != 0 && mark[y][x] <= v)
+	    //    return;
+	    RedWestArray[y][x] = v;
+	    mark[y][x] = v;
+
+	    spreadingRedWest(x + 1, y,getRedWestv(x,y,v) );
+
+	    spreadingRedWest(x, y + 1, getRedWestv(x,y,v));
+	    //     spreadingRedWest(x - 1, y, getRedWestv(x,y,v));
+	  //  spreadingRedWest(x, y - 1, getRedWestv(x,y,v));
+
+}
+//-------------------------------------------------------------------------------------------------------------------
+int getRedNorthv(int x, int y, int v)
+{
+	for(int a=0; a<13;a++)
+		{
+		if((RedNorthArray[y+a][x]==78 && OmarScientistOrientation=='N' )||(RedNorthArray[y+a][x]==98 && OmarSafeZoneOrientation=='N' )||(RedNorthArray[y+a][x]==88 && EularSafeZoneOrientation=='N' )||(RedNorthArray[y+a][x]==68 && EularScientistOrientation=='N' ))
+									{
+										v=a;
+										break;
+									}
+		else if ((RedNorthArray[y+a][x]==666)||(RedNorthArray[y+a][x]==991)||(RedNorthArray[y+a][x] == 777)||(RedNorthArray[y+a][x]==98)||(RedNorthArray[y+a][x]==78)||(RedNorthArray[y+a][x]==88)||(RedNorthArray[y+a][x]==68))
+			{
+				v=a-1;
+				break;
+			}
+		}
+	return v;
+}
+
+
+int getRedSouthv(int x, int y, int v)
+{
+	for(int a=0; a<13;a++)
+		{
+		if((RedSouthArray[y+a][x]==78 && OmarScientistOrientation=='S' )||(RedSouthArray[y+a][x]==98 && OmarSafeZoneOrientation=='S' )||(RedSouthArray[y+a][x]==88 && EularSafeZoneOrientation=='S' )||(RedSouthArray[y+a][x]==68 && EularScientistOrientation=='S' ))
+											{
+												v=a;
+												break;
+											}
+
+		else if ((RedSouthArray[y-a][x]==666)||(RedSouthArray[y-a][x]==991)||(RedSouthArray[y-a][x] == 777)||(RedSouthArray[y-a][x]==98)||(RedSouthArray[y-a][x]==78)||(RedSouthArray[y-a][x]==88)||(RedSouthArray[y-a][x]==68))
+			{
+				v=a-1;
+				break;
+			}
+		}
+	return v;
+}
+
+
+
+int getRedEastv(int x, int y, int v)
+{
+	for(int a=0; a<13;a++)
+		{
+		if((RedEastArray[y][x+a]==78 && OmarScientistOrientation=='E' )||(RedEastArray[y][x+a]==98 && OmarSafeZoneOrientation=='E' )||(RedEastArray[y][x+a]==88 && EularSafeZoneOrientation=='E' )||(RedEastArray[y][x+a]==68 && EularScientistOrientation=='E' ))
+											{
+												v=a;
+												break;
+											}
+
+		else if ((RedEastArray[y][x+a]==666)||(RedEastArray[y][x+a]==991)||(RedEastArray[y][x+a] == 777)||(RedEastArray[y][x+a]==98)||(RedEastArray[y][x+a]==78)||(RedEastArray[y][x+a]==88)||(RedEastArray[y][x+a]==68))
+			{
+				v=a-1;
+				break;
+			}
+		}
+	return v;
+}
+
+int getRedWestv(int x, int y, int v)
+{
+	for(int a=0; a<13;a++)
+		{
+		if((RedWestArray[y][x-a]==78 && OmarScientistOrientation=='W' )||(RedWestArray[y][x-a]==98 && OmarSafeZoneOrientation=='W' )||(RedWestArray[y][x-a]==88 && EularSafeZoneOrientation=='W' )||(RedWestArray[y][x-a]==68 && EularScientistOrientation=='W' ))
+												{
+													v=a;
+													break;
+												}
+
+		else if ((RedWestArray[y][x-a]==666)||(RedWestArray[y][x-a]==991)||(RedWestArray[y][x-a] == 777)||(RedWestArray[y][x-a]==98)||(RedWestArray[y][x-a]==78)||(RedWestArray[y][x-a]==88)||(RedWestArray[y][x-a]==68))
+			{
+				v=a-1;
+				break;
+			}
+		}
+	return v;
+}
+
+
+
+//-------------------------------------------------------------------------------------------------------------------
+void North()
+{
+	MakeNArray();
+	spreading(1,1,getv(1,1,0));
+		for(int s=1;s<=5;s++)
+			{
+				for (int h=1; h<=12; h++)
+				{
+					spreading(s,h,getv(1,1,0));
+
+				}
+			}
+
+		cout<<"north array:\n";
+		for (int i=12; i>=0; i--)
+		{
+			for (int j=0; j<7; j++)
+			{
+				cout<<EditedArray[i][j]<<"\t";
+			}
+			cout<<"\n";
+		}
+}
+void South()
+{
+	MakeSArray();
+	spreadingSouth(1,1,getSouthv(1,1,0));
+	for(int s=1;s<=5;s++)
+	{
+		for (int h=1; h<=12; h++)
+		{
+			spreadingSouth(s,h,getSouthv(1,1,0));
+
+		}
+	}
+		cout<<"South array:\n";
+		for (int i=12; i>=0; i--)
+		{
+			for (int j=0; j<7; j++)
+			{
+				cout<<SouthArraySpreading[i][j]<<"\t";
+			}
+			cout<<"\n";
+		}
+}
+void East()
+{
+	MakeEArray();
+	spreadingEast(1,1,getEastv(1,1,0));
+	cout<<"\n East array \n";
+	for(int s=1;s<=5;s++)
+		{
+			for (int h=1; h<=12; h++)
+			{
+				spreadingEast(s,h,getEastv(1,1,0));
+
+			}
+		}
+	for (int i=12; i>=0; i--)
+		{
+			for (int j=0; j<7; j++)
+			{
+				cout<<EastArraySpreading[i][j]<<"\t";
+			}
+			cout<<"\n";
+		}
+	cout<<"\n";
+}
+void West()
+{
+	MakeWArray();
+	spreadingWest(1,1,getWestv(1,1,0));
+	spreadingWest(5,4,getWestv(1,1,0));
+		cout<<"\n west array \n";
+		for(int s=1;s<=5;s++)
+			{
+				for (int h=1; h<=12; h++)
+				{
+					spreadingWest(s,h,getWestv(1,1,0));
+
+				}
+			}
+		for (int i=12; i>=0; i--)
+			{
+				for (int j=0; j<7; j++)
+				{
+					cout<<WestArraySpreading[i][j]<<"\t";
+				}
+				cout<<"\n";
+			}
+		cout<<"\n";
+}
+void MakeNArray()
+{
+cout<<"orignal array north \n";
+	for (int i=0; i<13; i++)
+	{
+		for (int j=0; j<7; j++)
+		{
+			EditedArray[i][j]=OrignalArray[i][j];
+		//	cout<<OrignalArray[i][j]<<"\t";
+		}
+		cout<<"\n";
+	}
+cout <<"\nEdited Array north\n\n";
+if(EularScientistOrientation=='N'&& restricted(yes,xes,EularScientistOrientation)==true)
+{
+
+EditedArray[yes][xes]=1;
+EditedArray[yes][xes]=68;
+spreading(xes,yes+1,getv(xes,yes,1));
+spreading(xes,yes-yes+1,getv(xes,yes,1));
+}
+else
+{
+
+EditedArray[yes][xes]=68;
+spreading(xes,yes+1,getv(xes,yes,1));
+spreading(xes,yes-yes+1,getv(xes,yes,1));
+}
+
+if(EularSafeZoneOrientation=='N'&& restricted(yesz,xesz,EularSafeZoneOrientation)==true)
+{
+EditedArray[yesz][xesz]=1;
+EditedArray[yesz][xesz]=88;
+spreading(xesz,yesz+1,getv(xesz,yesz,1));
+spreading(xesz,yesz-yesz+1,getv(xesz,yesz,1));
+}
+else
+{
+EditedArray[yesz][xesz]=88;
+spreading(xesz,yesz+1,getv(xesz,yesz,1));
+spreading(xesz,yesz-yesz+1,getv(xesz,yesz,1));
+
+}
+
+if(OmarScientistOrientation=='N'&& restricted(yos,xos,OmarScientistOrientation)==true)
+{
+EditedArray[yos][xos]=1;
+EditedArray[yos][xos]=78;
+spreading(xos,yos+1,getv(xos,yos,1));
+spreading(xos,yos-yos+1,getv(xos,yos,1));
+}
+else
+{
+
+
+EditedArray[yos][xos]=78;
+spreading(xos,yos+1,getv(xos,yos,1));
+spreading(xos,yos-yos+1,getv(xos,yos,1));
+}
+
+if (OmarSafeZoneOrientation=='N'&& restricted(yosz,xosz,OmarSafeZoneOrientation)==true)
+{
+
+EditedArray[yosz][xosz]=1;
+EditedArray[yosz][xosz]=98;
+spreading(xosz,yosz+1,getv(xosz,yosz,1));
+spreading(xosz,yosz-yosz+1,getv(xosz,yosz,1));
+
+}
+else
+{
+
+EditedArray[yosz][xosz]=98;
+spreading(xosz,yosz+1,getv(xosz,yosz,1));
+spreading(xosz,yosz-yosz+1,getv(xosz,yosz,1));
+}
+
+// eular scientist =68
+// eular safe zone=88
+//omar khyam scientist=78
+// omar khyam safezone=98
+for (int i=12; i>=0; i--)
+{
+	for (int j=0; j<7; j++)
+	{
+	//	cout<<EditedArray[i][j]<<"\t";
+	}
+	cout<<"\n";
+}
+cout<<"\n \n";
+}
+void MakeSArray()
+{
+cout<<"orignal array South \n";
+	for (int i=0; i<13; i++)
+	{
+		for (int j=0; j<7; j++)
+		{
+			SouthArraySpreading[i][j]=OrignalArray[i][j];
+		//	cout<<OrignalArray[i][j]<<"\t";
+		}
+		cout<<"\n";
+	}
+cout <<"\nEdited Array South\n\n";
+
+if(EularScientistOrientation=='S' && restricted(yes,xes,EularScientistOrientation)==true)
+{
+
+SouthArraySpreading[yes][xes]=1;
+SouthArraySpreading[yes][xes]=68;
+spreadingSouth(xes,yes+1,getSouthv(xes,yes,1));
+spreadingSouth(xes,yes-yes+1,getSouthv(xes,yes,1));
+}
+else
+{
+
+SouthArraySpreading[yes][xes]=68;
+spreadingSouth(xes,yes+1,getSouthv(xes,yes,1));
+spreadingSouth(xes,yes-yes+1,getSouthv(xes,yes,1));
+}
+
+if(EularSafeZoneOrientation=='S'&& restricted(yesz,xesz,EularSafeZoneOrientation)==true)
+{
+SouthArraySpreading[yesz][xesz]=1;
+SouthArraySpreading[yesz][xesz]=88;
+spreadingSouth(xesz,yesz+1,getSouthv(xesz,yesz,1));
+spreadingSouth(xesz,yesz-yesz+1,getSouthv(xesz,yesz,1));
+}
+else
+{
+SouthArraySpreading[yesz][xesz]=88;
+spreadingSouth(xesz,yesz+1,getSouthv(xesz,yesz,1));
+spreadingSouth(xesz,yesz-yesz+1,getSouthv(xesz,yesz,1));
+
+}
+
+if(OmarScientistOrientation=='S'&& restricted(yos,xos,OmarScientistOrientation)==true)
+{
+SouthArraySpreading[yos][xos]=1;
+SouthArraySpreading[yos][xos]=78;
+spreadingSouth(xos,yos+1,getSouthv(xos,yos,1));
+spreadingSouth(xos,yos-yos+1,getSouthv(xos,yos,1));
+}
+else
+{
+
+
+SouthArraySpreading[yos][xos]=78;
+spreadingSouth(xos,yos+1,getSouthv(xos,yos,1));
+spreadingSouth(xos,yos-yos+1,getSouthv(xos,yos,1));
+}
+
+if (OmarSafeZoneOrientation=='S' && restricted(yosz,xosz,OmarSafeZoneOrientation)==true)
+{
+
+SouthArraySpreading[yosz][xosz]=1;
+SouthArraySpreading[yosz][xosz]=98;
+spreadingSouth(xosz,yosz+1,getSouthv(xosz,yosz,1));
+spreadingSouth(xosz,yosz-yosz+1,getSouthv(xosz,yosz,1));
+
+}
+else
+{
+
+SouthArraySpreading[yosz][xosz]=98;
+spreadingSouth(xosz,yosz+1,getSouthv(xosz,yosz,1));
+spreadingSouth(xosz,yosz-yosz+1,getSouthv(xosz,yosz,1));
+}
+
+// eular scientist =68
+// eular safe zone=88
+//omar khyam scientist=78
+// omar khyam safezone=98
+for (int i=12; i>=0; i--)
+{
+	for (int j=0; j<7; j++)
+	{
+		//cout<<SouthArraySpreading[i][j]<<"\t";
+	}
+	cout<<"\n";
+}
+cout<<"\n \n";
+}
+void MakeEArray()
+{
+	cout<<"orignal array east \n";
+	for (int i=0; i<13; i++)
+	{
+		for (int j=0; j<7; j++)
+		{
+			EastArraySpreading[i][j]=OrignalArray[i][j];
+		//	cout<<OrignalArray[i][j]<<"\t";
+		}
+		cout<<"\n";
+	}
+cout <<"\nEdited east Array\n\n";
+
+if(EularScientistOrientation=='E'&& restricted(yes,xes,EularScientistOrientation)==true)
+{
+
+EastArraySpreading[yes][xes]=1;
+EastArraySpreading[yes][xes]=68;
+spreadingEast(xes-1,yes,getEastv(xes,yes,1));
+spreadingEast(xes+1,yes+1,getEastv(xes,yes,1));
+spreadingEast(xes+1,yes-yes+1,getEastv(xes,yes,1));
+}
+else
+{
+
+EastArraySpreading[yes][xes]=68;
+spreadingEast(xes,yes+1,getEastv(xes,yes,1));
+spreadingEast(xes,yes-yes+1,getEastv(xes,yes,1));
+}
+
+if(EularSafeZoneOrientation=='E'&& restricted(yesz,xesz,EularSafeZoneOrientation)==true)
+{
+EastArraySpreading[yesz][xesz]=1;
+EastArraySpreading[yesz][xesz]=88;
+spreadingEast(xesz-1,yesz,getEastv(xesz,yesz,1));
+spreadingEast(xesz+1,yesz+1,getEastv(xesz,yesz,1));
+spreadingEast(xesz+1,yesz-yesz+1,getEastv(xesz,yesz,1));
+}
+else
+{
+EastArraySpreading[yesz][xesz]=88;
+spreadingEast(xesz,yesz+1,getEastv(xesz,yesz,1));
+spreadingEast(xesz,yesz-yesz+1,getEastv(xesz,yesz,1));
+
+}
+
+if(OmarScientistOrientation=='E'&& restricted(yos,xos,OmarScientistOrientation)==true)
+{
+EastArraySpreading[yos][xos]=1;
+EastArraySpreading[yos][xos]=78;
+spreadingEast(xos-1,yos,getEastv(xos,yos,1));
+spreadingEast(xos+1,yos+1,getEastv(xos,yos,1));
+spreadingEast(xos+1,yos-yos+1,getEastv(xos,yos,1));
+}
+else
+{
+
+
+EastArraySpreading[yos][xos]=78;
+spreadingEast(xos,yos+1,getEastv(xos,yos,1));
+spreadingEast(xos,yos-yos+1,getEastv(xos,yos,1));
+}
+
+if (OmarSafeZoneOrientation=='E'&& restricted(yosz,xosz,OmarSafeZoneOrientation)==true)
+{
+
+EastArraySpreading[yosz][xosz]=1;
+
+EastArraySpreading[yosz][xosz]=98;
+spreadingEast(xosz-1,yosz,getEastv(xosz,yosz,1));
+spreadingEast(xosz+1,yosz+1,getEastv(xosz,yosz,1));
+spreadingEast(xosz+1,yosz-yosz+1,getEastv(xosz,yosz,1));
+}
+else
+{
+
+EastArraySpreading[yosz][xosz]=98;
+spreadingEast(xosz,yosz+1,getEastv(xosz,yosz,1));
+spreadingEast(xosz,yosz-yosz+1,getEastv(xosz,yosz,1));
+}
+
+
+// eular scientist =68
+// eular safe zone=88
+//omar khyam scientist=78
+// omar khyam safezone=98
+for (int i=12; i>=0; i--)
+{
+	for (int j=0; j<7; j++)
+	{
+		//cout<<EastArraySpreading[i][j]<<"\t";
+	}
+	cout<<"\n";
+}
+cout<<"\n \n";
+}
+void MakeWArray()
+{
+	cout<<"orignal array West \n";
+	for (int i=0; i<13; i++)
+	{
+		for (int j=0; j<7; j++)
+		{
+			WestArraySpreading[i][j]=OrignalArray[i][j];
+			//cout<<OrignalArray[i][j]<<"\t";
+		}
+		cout<<"\n";
+	}
+cout <<"\nEdited West Array\n\n";
+
+if(EularScientistOrientation=='W'&& restricted(yes,xes,EularScientistOrientation)==true)
+{
+
+WestArraySpreading[yes][xes]=1;
+WestArraySpreading[yes][xes]=68;
+spreadingWest(xes+1,yes,getWestv(xes,yes,1));
+spreadingWest(xes-1,yes+1,getWestv(xes,yes,1));
+spreadingWest(xes-1,yes-yes+1,getWestv(xes,yes,1));
+}
+else
+{
+
+WestArraySpreading[yes][xes]=68;
+spreadingWest(xes,yes+1,getWestv(xes,yes,1));
+spreadingWest(xes,yes-yes+1,getWestv(xes,yes,1));
+}
+
+if(EularSafeZoneOrientation=='W'&& restricted(yesz,xesz,EularSafeZoneOrientation)==true)
+{
+WestArraySpreading[yesz][xesz]=1;
+WestArraySpreading[yesz][xesz]=88;
+spreadingWest(xesz+1,yesz,getWestv(xesz,yesz,1));
+spreadingWest(xesz-1,yesz+1,getWestv(xesz,yesz,1));
+spreadingWest(xesz-1,yesz-yesz+1,getWestv(xesz,yesz,1));
+}
+else
+{
+WestArraySpreading[yesz][xesz]=88;
+spreadingWest(xesz,yesz+1,getWestv(xesz,yesz,1));
+spreadingWest(xesz,yesz-yesz+1,getWestv(xesz,yesz,1));
+
+}
+
+if(OmarScientistOrientation=='W'&& restricted(yos,xos,OmarScientistOrientation)==true)
+{
+WestArraySpreading[yos][xos]=1;
+WestArraySpreading[yos][xos]=78;
+spreadingWest(xos+1,yos,getWestv(xos,yos,1));
+spreadingWest(xos-1,yos+1,getWestv(xos,yos,1));
+spreadingWest(xos-1,yos-yos+1,getWestv(xos,yos,1));
+}
+else
+{
+
+
+WestArraySpreading[yos][xos]=78;
+spreadingWest(xos,yos+1,getWestv(xos,yos,1));
+spreadingWest(xos,yos-yos+1,getWestv(xos,yos,1));
+}
+
+if (OmarSafeZoneOrientation=='W'&& restricted(yosz,xosz,OmarSafeZoneOrientation)==true)
+{
+
+WestArraySpreading[yosz][xosz]=1;
+WestArraySpreading[yosz][xosz]=98;
+spreadingWest(xosz+1,yosz,getWestv(xosz,yosz,1));
+spreadingWest(xosz-1,yosz+1,getWestv(xosz,yosz,1));
+spreadingWest(xosz-1,yosz-yosz+1,getWestv(xosz,yosz,1));
+
+}
+else
+{
+
+WestArraySpreading[yosz][xosz]=98;
+spreadingWest(xosz,yosz+1,getWestv(xosz,yosz,1));
+spreadingWest(xosz,yosz-yosz+1,getWestv(xosz,yosz,1));
+}
+
+
+// eular scientist =68
+// eular safe zone=88
+//omar khyam scientist=78
+// omar khyam safezone=98
+for (int i=12; i>=0; i--)
+{
+	for (int j=0; j<7; j++)
+	{
+		//cout<<WestArraySpreading[i][j]<<"\t";
+	}
+	cout<<"\n";
+}
+cout<<"\n \n";
+}
+void spreading(int x, int y,  int v){
+v=getv(x,y,v);
+    if (x < 0 || x == MAXx) return;
+    if (y < 0 || y == MAXy) return;
+    if (EditedArray[y][x]==666) return;
+    if ((EditedArray[y][x] == 898)||(EditedArray[y][x] == 888)){
+    	return;
+    }
+    if ((EditedArray[y][x] == 595)||(EditedArray[y][x] == 555)) return;
+    if ((EditedArray[y][x] == 797)||(EditedArray[y][x] == 777)) return;
+    if ((EditedArray[y][x] == 68)||(EditedArray[y][x] == 78)||(EditedArray[y][x] == 88)||(EditedArray[y][x] == 98)) return;
+    if (EditedArray[y][x] == 991) return;
+    if (mark[y][x] != 0 && mark[y][x] <= v)
+        return;
+    EditedArray[y][x] = v;
+    mark[y][x] = v;
+    spreading(x + 1, y,getv(x,y,v) );
+    spreading(x, y + 1, getv(x,y,v));
+       //  spreading(x - 1, y, getv(x,y,v));
+     spreading(x, y - 1, getv(x,y,v));
+}
+int getv(int x,int y,int v)
+{
+	for(int a=0; a<13;a++)
+		{
+		if((EditedArray[y+a][x]==78 && OmarScientistOrientation=='N' )||(EditedArray[y+a][x]==98 && OmarSafeZoneOrientation=='N' )||(EditedArray[y+a][x]==88 && EularSafeZoneOrientation=='N' )||(EditedArray[y+a][x]==68 && EularScientistOrientation=='N' ))
+							{
+								v=a;
+								break;
+							}
+		else if (EditedArray[y+a][x]==78|| EditedArray[y+a][x]==68|| EditedArray[y+a][x]==88 ||EditedArray[y+a][x]==98 || (EditedArray[y+a][x]==666)||(EditedArray[y+a][x]==991)||(EditedArray[y+a][x] == 898)||(EditedArray[y+a][x] == 888)||(EditedArray[y+a][x] == 595)||(EditedArray[y+a][x] == 555)||(EditedArray[y+a][x] == 797)||(EditedArray[y+a][x] == 777))
+			{
+				v=a-1;
+				break;
+			}
+
+		}
+	return v;
+}
+void spreadingSouth(int x, int y,  int v){
+v=getSouthv(x,y,v);
+    if (SouthArraySpreading[y][x]==666) return;
+    if ((SouthArraySpreading[y][x] == 898)||(SouthArraySpreading[y][x] == 888)){
+    	return;
+    }
+    if ((SouthArraySpreading[y][x] == 595)||(SouthArraySpreading[y][x] == 555)) return;
+    if ((SouthArraySpreading[y][x] == 797)||(SouthArraySpreading[y][x] == 777)) return;
+    if ((SouthArraySpreading[y][x] == 68)||(SouthArraySpreading[y][x] == 78)||(SouthArraySpreading[y][x] == 88)||(SouthArraySpreading[y][x] == 98)) return;
+    if (SouthArraySpreading[y][x] == 991) return;
+    SouthArraySpreading[y][x] = v;
+    mark[y][x] = v;
+    spreadingSouth(x, y + 1, getSouthv(x,y,v));
+    spreadingSouth(x + 1, y,getSouthv(x,y,v) );
+     // spreadingSouth(x - 1, y, getSouthv(x,y,v));
+//    spreadingSouth(x, y - 1, getSouthv(x,y,v));
+}
+int getSouthv(int x,int y,int v)
+{
+	for(int a=0; a<13;a++)
+		{
+		if((SouthArraySpreading[y-a][x]==78 && OmarScientistOrientation=='S' )||(SouthArraySpreading[y-a][x]==98 && OmarSafeZoneOrientation=='S' )||(SouthArraySpreading[y-a][x]==88 && EularSafeZoneOrientation=='S' )||(SouthArraySpreading[y-a][x]==68 && EularScientistOrientation=='S' ))
+				{
+					v=a;
+					break;
+				}
+		else if ((SouthArraySpreading[y-a][x]==666)||(SouthArraySpreading[y-a][x]==68)||(SouthArraySpreading[y-a][x]==88)||(SouthArraySpreading[y-a][x]==78)||(SouthArraySpreading[y-a][x]==98)||(SouthArraySpreading[y-a][x]==991)||(SouthArraySpreading[y-a][x] == 898)||(SouthArraySpreading[y-a][x] == 888)||(SouthArraySpreading[y-a][x] == 595)||(SouthArraySpreading[y-a][x] == 555)||(SouthArraySpreading[y-a][x] == 797)||(SouthArraySpreading[y-a][x] == 777))
+			{
+				v=a-1;
+				break;
+			}
+
+		}
+	return v;
+}
+void spreadingEast(int xe,int ye, int ve)
+{
+	ve=getEastv(xe,ye,ve);
+    if (EastArraySpreading[ye][xe]==666) return;
+	    if ((EastArraySpreading[ye][xe] == 898)||(EastArraySpreading[ye][xe] == 888)){
+	    	return;
+	    }
+	    if ((EastArraySpreading[ye][xe] == 595)||(EastArraySpreading[ye][xe] == 555)) return;
+	    if ((EastArraySpreading[ye][xe] == 797)||(EastArraySpreading[ye][xe] == 777)) return;
+	    if ((EastArraySpreading[ye][xe] == 68)||(EastArraySpreading[ye][xe] == 78)||(EastArraySpreading[ye][xe] == 88)||(EastArraySpreading[ye][xe] == 98)) return;
+	    if (EastArraySpreading[ye][xe] == 991) return;
+	    EastArraySpreading[ye][xe] = ve;
+	    mark[ye][xe] = ve;
+		   spreadingEast(xe + 1, ye, getEastv(xe,ye,ve));
+	   spreadingEast(xe, ye + 1, getEastv(xe,ye,ve));
+//	    spreadingEast(x - 1, y, getEastv(x,y,v));
+	//    spreadingEast(x, y - 1, getEastv(x,y,v));
+}
+int getEastv(int xe,int ye, int ve)
+{
+	for(int ae=0; ae<7;ae++)
+			{
+		if((EastArraySpreading[ye][xe+ae]==78 && OmarScientistOrientation=='E' )||(EastArraySpreading[ye][xe+ae]==98 && OmarSafeZoneOrientation=='E' )||(EastArraySpreading[ye][xe+ae]==88 && EularSafeZoneOrientation=='E' )||(EastArraySpreading[ye][xe+ae]==68 && EularScientistOrientation=='E' ))
+								{
+									ve=ae;
+									break;
+								}
+		else if ((EastArraySpreading[ye][xe+ae]==666)||(EastArraySpreading[ye][xe+ae]==68)||(EastArraySpreading[ye][xe+ae]==78)||(EastArraySpreading[ye][xe+ae]==98)||(EastArraySpreading[ye][xe+ae]==88)||(EastArraySpreading[ye][xe+ae]==991)||(EastArraySpreading[ye][xe+ae] == 898)||(EastArraySpreading[ye][xe+ae] == 888)||(EastArraySpreading[ye][xe+ae] == 595)||(EastArraySpreading[ye][xe+ae] == 555)||(EastArraySpreading[ye][xe+ae] == 797)||(EastArraySpreading[ye][xe+ae] == 777))
+				{
+					ve=ae-1;
+					break;
+				}
+
+			}
+	return ve;
+}
+void spreadingWest(int xe,int ye, int ve)
+{
+	ve=getWestv(xe,ye,ve);
+    if (WestArraySpreading[ye][xe]==666) return;
+	    if ((WestArraySpreading[ye][xe] == 898)||(WestArraySpreading[ye][xe] == 888)){
+	    	return;
+	    }
+	    if ((WestArraySpreading[ye][xe] == 595)||(WestArraySpreading[ye][xe] == 555)) return;
+	    if ((WestArraySpreading[ye][xe] == 797)||(WestArraySpreading[ye][xe] == 777)) return;
+	    if ((WestArraySpreading[ye][xe] == 68)||(WestArraySpreading[ye][xe] == 78)||(WestArraySpreading[ye][xe] == 88)||(WestArraySpreading[ye][xe] == 98)) return;
+	    if (WestArraySpreading[ye][xe] == 991) return;
+	    WestArraySpreading[ye][xe] = ve;
+	    mark[ye][xe] = ve;
+		   spreadingWest(xe + 1, ye, getWestv(xe,ye,ve));
+	   spreadingWest(xe, ye + 1, getWestv(xe,ye,ve));
+//	    spreadingEast(x - 1, y, getEastv(x,y,v));
+	//    spreadingEast(x, y - 1, getEastv(x,y,v));
+}
+int getWestv(int xe,int ye, int ve)
+{
+	for(int ae=0; ae<7;ae++)
+			{
+		if((WestArraySpreading[ye][xe-ae]==78 && OmarScientistOrientation=='W' )||(WestArraySpreading[ye][xe-ae]==98 && OmarSafeZoneOrientation=='W' )||(WestArraySpreading[ye][xe-ae]==88 && EularSafeZoneOrientation=='W' )||(WestArraySpreading[ye][xe-ae]==68 && EularScientistOrientation=='W' ))
+												{
+													ve=ae;
+													break;
+												}
+		else if ((WestArraySpreading[ye][xe-ae]==666)||(WestArraySpreading[ye][xe-ae]==68)||(WestArraySpreading[ye][xe-ae]==78)||(WestArraySpreading[ye][xe-ae]==98)||(WestArraySpreading[ye][xe-ae]==88)||(WestArraySpreading[ye][xe-ae]==991)||(WestArraySpreading[ye][xe-ae] == 898)||(WestArraySpreading[ye][xe-ae] == 888)||(WestArraySpreading[ye][xe-ae] == 595)||(WestArraySpreading[ye][xe-ae] == 555)||(WestArraySpreading[ye][xe-ae] == 797)||(WestArraySpreading[ye][xe-ae] == 777))
+				{
+					ve=ae-1;
+					break;
+				}
+
+			}
+	return ve;
+}
+void GetGy()
+{
+	if(colour=='W')
+	{
+		for( int c=0; c<=5; c++)
+		{
+	for (int i=12; i>=0; i--)
+	{
+		//cout <<EditedArray[i][gx]<<"\t"<<EastArraySpreading[i][gx]<<"\t"<<WestArraySpreading[i][gx]<<"\t"<<SouthArraySpreading[i][gx]<<"\n";
+	if((EditedArray[i][c]==wn)&& (EastArraySpreading[i][c]==we)&& (WestArraySpreading[i][c]==ww)&& (SouthArraySpreading[i][c]==wws))
+		{
+			gy=i;
+			gx=c;
+			cout<<"\nGy ki value"<<gy<<"\n";
+			cout<<"\nGx ki value"<<gx<<"\n";
+		}
+	}
+		}
+	}
+
+	else if (colour=='B')
+		{
+				for( int c=0; c<=5; c++)
+		{
+			for (int i=12; i>=0; i--)
+				{
+				if((RedWestArray[i][c]==ww)&& (RedEastArray[i][c]==we)&& (RedNorthArray[i][c]==wn)&& (RedSouthArray[i][c]==wws)&& ((OrignalArray[i][c]==505)|| (OrignalArray[i][c]==555)|| (OrignalArray[i][c]==595)))
+					{
+						gy=i;
+						gx=c;
+						cout<<"\n blue Gy ki value"<<gy<<"\n";
+						cout<<"\n blue Gx ki value"<<gx<<"\n";
+					}
+				}
+			}
+		}
+	else if (colour=='Y')
+		{	for( int c=0; c<=5; c++)
+		
+		{
+			for (int i=12; i>=0; i--)
+				{
+				if((RedWestArray[i][c]==ww)&& (RedEastArray[i][c]==we)&& (RedNorthArray[i][c]==wn)&& (RedSouthArray[i][c]==wws)&& ((OrignalArray[i][c]==808)|| (OrignalArray[i][c]==888)|| (OrignalArray[i][c]==898)))
+					{
+						gx=c;
+						gy=i;
+						cout<<"\n yellow Gy ki value"<<gy<<"\n";
+						cout<<"\n yellow Gx ki value"<<gx<<"\n";
+					}
+				}
+			}
+		}
+	else if (colour=='R')
+		{
+				for( int c=0; c<=5; c++)
+		{
+
+			for (int i=12; i>=0; i--)
+				{
+				//cout<<RedWestArray[i][gx]<<"\t"<<RedEastArray[i][gx]<<"\t"<<RedNorthArray[i][gx]<<"\t"<<RedSouthArray[i][gx]<<"\n";
+				if((RedWestArray[i][c]==ww)&& (RedEastArray[i][c]==we)&& (RedNorthArray[i][c]==wn)&& (RedSouthArray[i][c]==wws)&& ((OrignalArray[i][c]==707)|| (OrignalArray[i][c]==777)|| (OrignalArray[i][c]==797)))
+					{
+						gy=i;
+						cout<<"\n red Gy ki value"<<gy<<"\n";
+						cout<<"\n red Gx ki value"<<gx<<"\n";
+					}
+				}
+		}
+	}
+}
+int team=1;
+float degrees=0;
+void walkBlock()
+{
+	cout <<"walking block\n";
+}
+void aligntoNorth()
+{
+	cout<<"aligning toward north\n";
+/*	
+	while(degrees> 100 && degrees <70)
+	{
+		moveRight();
+	}
+*/
+}
+void aligntoSouth()
+{
+	cout<<"aligning toward south\n";
+	
+/*	while(degrees> 290 && degrees <250)
+	{
+		moveRight();
+	}
+	*/
+}
+void aligntoWest()
+{
+	cout<<"aligning toward West\n";	
+	
+	/*while(degrees> 20 && degrees <350)
+	{
+		moveRight();
+	}*/
+}
+void aligntoEast()
+{
+	cout<<"aligning toward East\n";
+	
+	/*while(degrees> 200 && degrees <170)
+	{
+		moveRight();
+	}*/
+}
+void northBlock()
+{
+	if(team==1)
+	{
+		aligntoNorth();
+	}
+	else if (team==2)
+	{
+		aligntoSouth();
+	}
+	walkBlock();
+}
+
+void southBlock()
+{
+		if(team==1)
+	{
+		aligntoSouth();
+	}
+	else if (team==2)
+	{
+		aligntoNorth();
+	}
+	walkBlock();
+}
+
+void eastBlock()
+{
+		if(team==1)
+	{
+		aligntoEast();
+	}
+	else if (team==2)
+	{
+		aligntoWest();
+	}
+	walkBlock();
+}
+
+void westBlock()
+{
+		if(team==1)
+	{
+		aligntoWest();
+	}
+	else if (team==2)
+	{
+		aligntoEast();
+	}
+	walkBlock();
+}
+
+void funct()
+{
+	cout<<"performing function \n";
+}
+void  destination(int sxp, int syp, char a)
+{
+	if(a=='E')
+	{
+		
+	cout <<" destination is on your East \n";
+	eastBlock();
+	funct();
+		cout <<" picked or placed now 1 block back \n";
+	westBlock();
+	}	
+else	if(a=='W')
+	{
+		
+	cout <<" destination is on your West \n";
+	westBlock();
+	funct();
+		cout <<" picked or placed now 1 block back \n";
+	eastBlock();
+	}
+	else	if(a=='N')
+	{
+		
+	cout <<" destination is on your North \n";
+	northBlock();
+	funct();	
+	cout <<" picked or placed now 1 block back \n";
+	southBlock();
+	
+	}
+	else	if(a=='S')
+	{
+		
+	cout <<" destination is on your South \n";
+	southBlock();
+	funct();
+	cout <<" picked or placed now 1 block back \n";
+	northBlock();
+	}
+}
+char face ='N';
+
+bool findavailable(int xf, int yf)
+{
+	if((xf<0||xf>n)||(yf<0||yf>m))
+	{
+		return false;
+	}
+	if((map[xf][yf]==3)||(map[xf][yf]==4))
+	{
+	return true;
+	}
+	else
+	{
+	return false;
+	}
+}
+void PathExecute(int sxp,int syp, char a)
+{
+	if (((syp==10 ||syp==4|| syp==1|| syp==13) && sxp+1==2)&&((findavailable(sxp-1,syp)==false &&findavailable(sxp,syp+1)==false &&findavailable(sxp,syp-1)==false )))
+	{
+		cout<<"discarding horizontal 1 block moving 2 blocksmnm\n";
+			if(map[sxp][syp]==4)
+		{
+			cout<<"destination\n";
+	 	  	map[sxp][syp]=10;
+	 	  	 destination(sxp, syp, a);
+	 	  	return;
+		} 
+		if (findavailable(sxp+1,syp)==true)
+ 	  {
+ 	  	
+ 	  //	cout<<"move East 1 block \n";
+ 	  	eastBlock();
+		   face='E';
+ 	  	map[sxp][syp]=9;
+ 	  	map[sxp+1][syp]=9;
+ 	  	
+ 	  PathExecute(sxp+2,syp, a);
+ 	  }
+ 	   else if (findavailable(sxp,syp)==false)
+ 	  {
+ 	  		if(map[sxp+1][syp]==4||map[sxp-1][syp]==4||map[sxp][syp+1]==4||map[sxp][syp-1]==4)
+		{
+			cout<<"destination\n";
+	 	  	 destination(sxp, syp, a);
+	 	  	map[sxp][syp]=10;
+	 	  	return;
+		} 
+ 	  	return;
+ 	  }
+ 	  
+ 	  
+	}
+	else if	(((syp==10 ||syp==4|| syp==1|| syp==13) && sxp-1==2)&&((findavailable(sxp+1,syp)==false &&findavailable(sxp,syp+1)==false &&findavailable(sxp,syp-1)==false )))
+	{
+		cout<<"discarding horizontal 1 block moving 2 blocks\n";
+			if(map[sxp][syp]==4)
+		{
+			cout<<"destination\n";
+	 	  	 destination(sxp, syp, a);
+	 	  	map[sxp][syp]=10;
+	 	  	return;
+		} 
+		if (findavailable(sxp-1,syp)==true)
+ 	  {
+ 	  	
+ 	  //	cout<<"move East 1 block \n";
+ 	  	eastBlock();
+		   face='E';
+ 	  	map[sxp][syp]=9;
+ 	  	map[sxp-1][syp]=9;
+ 	  	
+ 	  PathExecute(sxp-2,syp,a);
+ 	  }
+ 	   else if (findavailable(sxp,syp)==false)
+ 	  {
+ 	  		if(map[sxp+1][syp]==4||map[sxp-1][syp]==4||map[sxp][syp+1]==4||map[sxp][syp-1]==4)
+		{
+			cout<<"destination\n";
+	 	  	 destination(sxp, syp, a);
+	 	  	map[sxp][syp]=10;
+	 	  	return;
+		} 
+ 	  	return;
+ 	  }
+ 	  
+ 	  else {
+ 	  	
+ 	  		if(map[sxp+1][syp]==4||map[sxp-1][syp]==4||map[sxp][syp+1]==4||map[sxp][syp-1]==4)
+		{
+			cout<<"destination\n";
+	 	  	 destination(sxp, syp, a);
+	 	  	map[sxp][syp]=10;
+	 	  	return;
+		} 
+ 	  	return;
+ 	  }
+	}
+	else if((syp+1==3||syp+1==5||syp+1==9 ||syp+1==11)&&(findavailable(sxp+1,syp)==false &&findavailable(sxp-1,syp)==false &&findavailable(sxp,syp-1)==false )&&((syp!=10 ||syp!=4|| syp!=1|| syp!=13) && sxp+1!=2)&&((syp!=10 ||syp!=4|| syp!=1|| syp!=13) && sxp-1!=2))
+	{
+		cout<<"move  2 blocks & 1 block discarded\n";
+		
+		if(map[sxp][syp]==4)
+		{
+			cout<<"destination\n";
+	 	  	 destination(sxp, syp, a);
+	 	  	map[sxp][syp]=10;
+	 	  	return;
+		}
+ 	  if (findavailable(sxp+1,syp)==true)
+ 	  {
+ 	  	
+ 	  //	cout<<"move East 1 block \n";
+ 	  	eastBlock();
+		   face='E';
+ 	  	map[sxp][syp]=9;
+ 	  PathExecute(sxp+1,syp,a);
+ 	  }
+ 	  
+ 	 	  else  if (findavailable(sxp,syp+1)==true)
+ 	  {
+ 	  	//cout<<"move south 1 block\n";
+ 	//  face='E';
+ 	southBlock();
+ 	  		map[sxp][syp]=9;
+ 	  		map[sxp][syp+1]=9;
+ 	  PathExecute(sxp,syp+2,a);
+ 	  }
+	    else  if (findavailable(sxp-1,syp)==true)
+ 	  {
+ 	  	//cout<<"move west 1 block \n";
+ 	  	westBlock();
+ 	  	map[sxp][syp]=9;
+ 	  	
+ 	  PathExecute(sxp-1,syp,a);
+ 	  	
+ 	  }
+ 
+ 	  
+ 	  else  if (findavailable(sxp,syp-1)==true)
+ 	  {
+ 	  	//cout<<"move north 1 block\n";
+ 	  	northBlock();
+ 	  	map[sxp][syp]=9;
+ 	  PathExecute(sxp,syp-1,a);
+ 	  }
+ 	  
+ 	   else if (findavailable(sxp,syp)==false)
+ 	  {
+ 	  		if(map[sxp+1][syp]==4||map[sxp-1][syp]==4||map[sxp][syp+1]==4||map[sxp][syp-1]==4)
+		{
+			cout<<"destination\n";
+	 	  	 destination(sxp, syp, a);
+	 	  	map[sxp][syp]=10;
+	 	  	return;
+		} 
+ 	  	return;
+ 	  }
+ 
+
+	} 
+	
+else 	if(((syp-1==3)||(syp-1==5)||(syp-1==9) ||(syp-1==11))&&(findavailable(sxp+1,syp)==false &&findavailable(sxp-1,syp)==false) &&(findavailable(sxp,syp+1)==false )&&((syp!=10 ||syp!=4|| syp!=1|| syp!=13) && sxp+1!=2)&&((syp!=10 ||syp!=4|| syp!=1|| syp!=13) && sxp-1!=2))
+	{
+		cout<<"move  2 blocks & 1 block discarded\n";
+		
+		if(map[sxp][syp]==4)
+		{
+			cout<<"destination\n";
+	 	  	 destination(sxp, syp, a);
+	 	  	map[sxp][syp]=10;
+	 	  	return;
+		}
+ 	  if (findavailable(sxp+1,syp)==true)
+ 	  {
+ 	  	
+ 	  //	cout<<"move East 1 block \n";
+ 	  	eastBlock();
+		   face='E';
+ 	  	map[sxp][syp]=9;
+ 	  PathExecute(sxp+1,syp,a);
+ 	  }
+ 	  
+ 	 	  else  if (findavailable(sxp,syp+1)==true)
+ 	  {
+ 	  	//cout<<"move south 1 block\n";
+ 	//  face='E';
+ 	southBlock();
+ 	map[sxp][syp]=9;
+ 	map[sxp][syp+1]=9;
+ 	PathExecute(sxp,syp+2,a);
+ 	  }
+ 	  
+	    else  if (findavailable(sxp-1,syp)==true)
+ 	  {
+ 	  	//cout<<"move west 1 block \n";
+ 	  	westBlock();
+ 	  	map[sxp][syp]=9;
+ 	  	
+ 	  PathExecute(sxp-1,syp,a);
+ 	  	
+ 	  }
+ 
+ 	  
+ 	  else  if (findavailable(sxp,syp-1)==true)
+ 	  {
+ 	  	//cout<<"move north 1 block\n";
+ 	  	northBlock(); 
+ 	  	map[sxp][syp]=9;
+ 	  	map[sxp][syp-1]=9;
+ 	  PathExecute(sxp,syp-2,a);
+ 	  }
+ 	  
+ 	   else if (findavailable(sxp,syp)==false)
+ 	  {
+ 	  		if(map[sxp+1][syp]==4||map[sxp-1][syp]==4||map[sxp][syp+1]==4||map[sxp][syp-1]==4)
+		{
+			cout<<"destination\n";
+	 	  	 destination(sxp, syp, a);
+	 	  	map[sxp][syp]=10;
+	 	  	return;
+		} 
+ 	  	return;
+ 	  }
+ 
+
+	}
+	
+	else if((syp+1!=3||syp+1!=5||syp+1!=9 ||syp+1!=11))
+	{
+		if(map[sxp][syp]==4)
+		{
+			cout<<"destination\n";
+	 	  	 destination(sxp, syp, a);
+	 	  	map[sxp][syp]=10;
+	 	  	return;
+		}
+ 	  if (findavailable(sxp+1,syp)==true)
+ 	  {
+ 	  	
+ 	  //	cout<<"move East 1 block \n";
+ 	  	eastBlock();
+		   face='E';
+ 	  	map[sxp][syp]=9;
+ 	  PathExecute(sxp+1,syp,a);
+ 	  }
+ 	  
+ 	 	  else  if (findavailable(sxp,syp+1)==true)
+ 	  {
+ 	  	//cout<<"move south 1 block\n";
+ 	//  face='E';
+ 	southBlock();
+ 	  		map[sxp][syp]=9;
+ 	  	
+ 	  PathExecute(sxp,syp+1,a);
+ 	  }
+	    else  if (findavailable(sxp-1,syp)==true)
+ 	  {
+ 	  	//cout<<"move west 1 block \n";
+ 	  	westBlock();
+ 	  	map[sxp][syp]=9;
+ 	  	
+ 	  PathExecute(sxp-1,syp,a);
+ 	  	
+ 	  }
+ 
+ 	  
+ 	  else  if (findavailable(sxp,syp-1)==true)
+ 	  {
+ 	  	//cout<<"move north 1 block\n";
+ 	  	northBlock();
+ 	  	map[sxp][syp]=9;
+ 	  PathExecute(sxp,syp-1,a);
+ 	  }
+ 	  
+ 	  else if (findavailable(sxp,syp)==false)
+ 	  {
+ 	  		if(map[sxp+1][syp]==4||map[sxp-1][syp]==4||map[sxp][syp+1]==4||map[sxp][syp-1]==4)
+		{
+			cout<<"destination\n";
+	 	  	 destination(sxp, syp, a);
+	 	  	map[sxp][syp]=10;
+	 	  	return;
+		} 
+ 	  	return;
+ 	  }
+ 	  
+	}
+}
+
+
+
+
+int compensateX(int msx,int msy)
+{
+	
+  if((msx<0 || msx>5)||(msy<0|| msy>10))
+  {
+    return msx;
+  }
+	if((msx<2)&& msy==3)
+	{
+		msx=msx;
+		return msx;	
+	}
+	else	if(msx<=5 && msx>=2 && msy==3)
+	{
+		msx=msx+1;
+		return msx;	
+	}
+	else	if((msx<=5&&msx>=2 && msy<=2))
+	{
+		msx=msx+1;
+		return msx;	
+	}
+	else if(msx<=2 && msy==4)
+	{
+		msx=msx;
+		return msx;
+	}
+		else if( msx<=5 && msx>2 && msy==4)
+		{
+			msx=msx+1;
+			return msx;
+		}
+		
+			else if( msx<=2 && msx>=0 && msy==5)
+		{
+			msx=msx;
+			return msx;				
+		}
+			else if( msx<=5 && msx>2 && msy==5)
+		{
+			msx=msx+1;
+			return msx;				
+		}	
+		
+			else if( msx<=2 && msx>=0 && msy==6)
+		{
+			msx=msx;
+			return msx;				
+		}
+			else if( msx<=5 && msx>2 && msy==6)
+		{
+			msx=msx+1;
+			return msx;				
+		}	
+			else if( msx<=2 && msx>=0 && msy==7)
+		{
+			msx=msx;
+			return msx;				
+		}
+			else if( msx<=5 && msx>2 && msy==7)
+		{
+			msx=msx+1;
+			return msx;				
+		}
+			else if( msx<2 && msx>=0 && msy==8)
+		{
+			msx=msx;
+			return msx;				
+		}
+			else if( msx<=5 && msx>=2 && msy==8)
+		{
+			msx=msx+1;
+			return msx;				
+		}	
+		
+		else if( msx<2 && msx>=0 && msy==9)
+		{
+			msx=msx;
+			return msx;				
+		}
+			else if( msx<=5 && msx>=2 && msy==9)
+		{
+			msx=msx+1;
+			return msx;				
+		}	
+		else if( msx<2 && msx>=0 && msy==10)
+		{
+			msx=msx;
+			return msx;				
+		}
+			else if( msx<=5 && msx>=2 && msy==10)
+		{
+			msx=msx+1;
+			return msx;				
+		}
+	else 
+	return msx;
+}
+int compensateY(int msx,int msy)
+{
+	
+  if((msx<0 || msx>5)||(msy<0|| msy>10))
+  {
+    return msy;
+  }
+	if((msx<2) && msy==3)
+	{
+		msy=msy+1;
+		return msy;	
+	}
+		else if((msx>=2&&msx<=5) && msy==3)
+	{
+		msy=msy+1;
+		return msy;	
+	}
+	
+ else	if(msx<=5&&msx>=2 && msy<=2)
+	{
+		msy=msy;
+		return msy;	
+	}
+	else if(msx<=2 && msy==4)
+	{
+		msy=msy+2;
+		return msy;
+	}
+	else if( msx<=5 && msx>2 && msy==4)
+	{
+		msy=msy+2;
+		return msy;
+	}
+	
+		else if( msx<=2 && msx>=0 && msy==5)
+		{
+			msy=msy+2;
+			return msy;				
+		}	
+		else if( msx<=5 && msx>2 && msy==5)
+		{
+			msy=msy+2;
+			return msy;				
+		}
+		
+			else if( msx<=2 && msx>=0 && msy==6)
+		{
+			msy=msy+2;
+			return msy;				
+		}	
+		else if( msx<=5 && msx>2 && msy==6)
+		{
+			msy=msy+2;
+			return msy;				
+		}	
+			else if( msx<=2 && msx>=0 && msy==7)
+		{
+			msy=msy+3;
+			return msy;				
+		}	
+		else if( msx<=5 && msx>2 && msy==7)
+		{
+			msy=msy+3;
+			return msy;				
+		}	
+			else if( msx<2 && msx>=0 && msy==8)
+		{
+			msy=msy+4;
+			return msy;				
+		}	
+		else if( msx<=5 && msx>=2 && msy==8)
+		{
+			msy=msy+4;
+			return msy;				
+		}
+		else if( msx<2 && msx>=0 && msy==9)
+		{
+			msy=msy+4;
+			return msy;				
+		}	
+		else if( msx<=5 && msx>=2 && msy==9)
+		{
+			msy=msy+4;
+			return msy;				
+		}
+			else if( msx<2 && msx>=0 && msy==10)
+		{
+			msy=msy+4;
+			return msy;				
+		}	
+		else if( msx<=5 && msx>=2 && msy==10)
+		{
+			msy=msy+4;
+			return msy;				
+		}
+		
+
+	else 
+	return msy;
+	
+}
+void destro(int sxx, int syy, int dxx, int dyy, int sxes, int syes, int sxos, int syos, int sxesz, int syesz, int sxosz, int syosz, char O)
+	{
+		int	cxes,cyes,cyos,cxos,cxesz,cyesz, cxosz,cyosz;
+		int ssx=sxx; 
+		int ssy=syy; 
+		int ddx=dxx; 
+		int ddy=dyy;
+		if( O=='E')
+		{
+				cxes=compensateX(sxes,syes);
+	cyes=compensateY(sxes,syes);
+	
+	cxos=compensateX(sxos,syos);
+	cyos=compensateY(sxos,syos);
+	
+	cxesz=compensateX(sxesz,syesz);
+	cyesz=compensateY(sxesz,syesz);
+	
+	cxosz=compensateX(sxosz,syosz);
+	cyosz=compensateY(sxosz,syosz);
+	
+			ddx=compensateX(dxx-1,dyy);
+			ddy=compensateY(dxx-1,dyy);
+			
+			ssx=compensateX(sxx,syy);
+			ssy=compensateY(sxx,syy);
+			
+		good obj( ssx,  ssy,  ddx,  ddy,  cxes,  cyes,  cxos,  cyos,  cxesz,  cyesz,  cxosz,  cyosz);
+	
+		PathExecute(ssx,ssy,O);
+		
+		
+		}
+		else if( O=='W')
+		{
+				cxes=compensateX(sxes,syes);
+	cyes=compensateY(sxes,syes);
+	
+	cxos=compensateX(sxos,syos);
+	cyos=compensateY(sxos,syos);
+	
+	cxesz=compensateX(sxesz,syesz);
+	cyesz=compensateY(sxesz,syesz);
+	
+	cxosz=compensateX(sxosz,syosz);
+	cyosz=compensateY(sxosz,syosz);
+	
+			ddx=compensateX(dxx+1,dyy);
+			ddy=compensateY(dxx+1,dyy);
+			
+		ssx=compensateX(sxx,syy);
+			ssy=compensateY(sxx,syy);
+			
+		good obj( ssx,  ssy,   ddx,  ddy,  cxes,  cyes,  cxos,  cyos,  cxesz,  cyesz,  cxosz,  cyosz);
+	
+		PathExecute(ssx,ssy,O);
+		}		
+		else if( O=='N')
+		{
+					cxes=compensateX(sxes,syes);
+	cyes=compensateY(sxes,syes);
+	
+	cxos=compensateX(sxos,syos);
+	cyos=compensateY(sxos,syos);
+	
+	cxesz=compensateX(sxesz,syesz);
+	cyesz=compensateY(sxesz,syesz);
+	
+	cxosz=compensateX(sxosz,syosz);
+	cyosz=compensateY(sxosz,syosz);
+	
+			ddx=compensateX(dxx,dyy-1);
+			ddy=compensateY(dxx,dyy-1);
+			
+		ssx=compensateX(sxx,syy);
+			ssy=compensateY(sxx,syy);
+			
+		good obj( ssx,  ssy,  ddx,  ddy,  cxes,  cyes,  cxos,  cyos,  cxesz,  cyesz,  cxosz,  cyosz);
+	
+		PathExecute(ssx,ssy,O);
+		}
+				else if( O=='S')
+		{
+							cxes=compensateX(sxes,syes);
+	cyes=compensateY(sxes,syes);
+	
+	cxos=compensateX(sxos,syos);
+	cyos=compensateY(sxos,syos);
+	
+	cxesz=compensateX(sxesz,syesz);
+	cyesz=compensateY(sxesz,syesz);
+	
+	cxosz=compensateX(sxosz,syosz);
+	cyosz=compensateY(sxosz,syosz);
+	
+		ddx=compensateX(dxx,dyy+1);
+			ddy=compensateY(dxx,dyy+1);
+			ssx=compensateX(sxx,syy);
+			ssy=compensateY(sxx,syy);
+			
+		good obj( ssx,  ssy,  ddx,  ddy,  cxes,  cyes,  cxos,  cyos,  cxesz,  cyesz,  cxosz,  cyosz);
+	
+		PathExecute(ssx,ssy,O);
+		}
+	}
+int main()
+{
+	North();
+	South();
+	cout<<"\n alhamdulillah complete\n \n";
+	cout <<"now east array";
+	cout<<"\n";
+	East();
+	West();
+	RedNorth();
+	RedSouth();
+	RedEast();
+	RedWest();
+	GetGy();
+
+
+	int csx, csy;
+
+	csx=compensateX(gx-1,gy-1);
+	csy=compensateY(gx-1,gy-1);
+	
+
+	
+	
+	
+	// compensate safe zones & scientists at x & y then compensate Destination algorithm of east,west
+
+int i=4;
+char g[i];
+g[0]=EularScientistOrientation;
+g[1]=EularSafeZoneOrientation;
+g[2]=OmarScientistOrientation;
+g[3]=OmarSafeZoneOrientation;
+
+//------------------------- x&y cooridnates of eular safe zone
+ xesz=xesz-1;
+ yesz=yesz-1;
+//------------------------- x&y cooridnates of omar safe zone
+ xosz=xosz-1.5;
+ yosz=yosz-1;
+//------------------------- x&y cooridnates of eular scientist
+ xes=xes-1;
+ yes=yes-1;
+//------------------------- x&y cooridnates of omar scientist
+ xos=xos-1;
+yos=yos-1;
+//-------------------------------------------
+
+destro(csx,csy,xes,yes,xes,yes,xos,yos,xesz,yesz,xosz,yosz,g[0]);
+
+if(g[0]=='E')
+{
+	
+destro(xes-1,yes,xesz,yesz,xes,yes,xos,yos,xesz,yesz,xosz,yosz,g[1]);
+}
+else if(g[0]=='W')
+{
+destro(xes+1,yes,xesz,yesz,xes,yes,xos,yos,xesz,yesz,xosz,yosz,g[1]);
+	
+}
+else if(g[0]=='N')
+{
+destro(xes,yes-1,xesz,yesz,xes,yes,xos,yos,xesz,yesz,xosz,yosz,g[1]);
+	
+}
+else if(g[0]=='S')
+{
+destro(xes,yes+1,xesz,yesz,xes,yes,xos,yos,xesz,yesz,xosz,yosz,g[1]);
+	
+}
+
+
+if(g[1]=='E')
+{
+	
+destro(xesz-1,yesz,xos,yos,xes,yes,xos,yos,xesz,yesz,xosz,yosz,g[2]);
+}
+else if(g[1]=='W')
+{
+destro(xesz+1,yesz,xos,yos,xes,yes,xos,yos,xesz,yesz,xosz,yosz,g[2]);
+	
+}
+else if(g[1]=='N')
+{
+destro(xesz,yesz-1,xos,yos,xes,yes,xos,yos,xesz,yesz,xosz,yosz,g[2]);
+	
+}
+else if(g[1]=='S')
+{
+destro(xesz,yesz+1,xos,yos,xes,yes,xos,yos,xesz,yesz,xosz,yosz,g[2]);
+	
+}
+
+
+if(g[2]=='E')
+{
+	
+destro(xos-1,yos,xosz,yosz,xes,yes,xos,yos,xesz,yesz,xosz,yosz,g[3]);
+}
+else if(g[2]=='W')
+{
+destro(xos+1,yos,xosz,yosz,xes,yes,xos,yos,xesz,yesz,xosz,yosz,g[3]);
+	
+}
+else if(g[2]=='N')
+{
+destro(xos,yos-1,xosz,yosz,xes,yes,xos,yos,xesz,yesz,xosz,yosz,g[3]);
+	
+}
+else if(g[2]=='S')
+{
+destro(xos,yos+1,xosz,yosz,xes,yes,xos,yos,xesz,yesz,xosz,yosz,g[3]);
+	
+}
+
+
+	
+	int cc;
+	cin>>cc;
+	return 0;
+}
