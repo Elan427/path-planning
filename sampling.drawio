@@ -1,1 +1,88 @@
-<mxfile host="app.diagrams.net" modified="2020-07-17T20:53:27.687Z" agent="5.0 (X11; CrOS x86_64 13020.87.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.119 Safari/537.36" version="13.4.6" etag="QyvHZAdD1qCRnZrZATY-" type="github"><diagram id="5Z0tiREBjd3C4KGPI7uu">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2020-07-17T21:02:08.324Z" agent="5.0 (X11; CrOS x86_64 13020.87.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.119 Safari/537.36" etag="unRJUfpRd0af66gWSInD" version="13.4.6" type="github">
+  <diagram id="5Z0tiREBjd3C4KGPI7uu" name="Page-1">
+    <mxGraphModel dx="782" dy="698" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="PTYCPpzWRQGi11ZMApAE-1" value="" style="endArrow=none;html=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="120" y="200" as="sourcePoint" />
+            <mxPoint x="520" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PTYCPpzWRQGi11ZMApAE-2" value="" style="endArrow=none;html=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="120" y="220" as="sourcePoint" />
+            <mxPoint x="120" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PTYCPpzWRQGi11ZMApAE-3" value="" style="endArrow=none;html=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="320" y="220" as="sourcePoint" />
+            <mxPoint x="320" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PTYCPpzWRQGi11ZMApAE-4" value="" style="endArrow=none;html=1;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="520" y="220" as="sourcePoint" />
+            <mxPoint x="520" y="180" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2" value="0s" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="95" y="220" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="PTYCPpzWRQGi11ZMApAE-5" value="2ms&lt;br&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="290" y="220" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="PTYCPpzWRQGi11ZMApAE-6" value="4ms&lt;br&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="500" y="220" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="PTYCPpzWRQGi11ZMApAE-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="PTYCPpzWRQGi11ZMApAE-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PTYCPpzWRQGi11ZMApAE-7" value="Cycler 3&lt;br&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="100" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="PTYCPpzWRQGi11ZMApAE-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="PTYCPpzWRQGi11ZMApAE-8">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="330" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PTYCPpzWRQGi11ZMApAE-8" value="Cycler 2" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="120" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="PTYCPpzWRQGi11ZMApAE-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="PTYCPpzWRQGi11ZMApAE-9">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="320" y="200" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PTYCPpzWRQGi11ZMApAE-9" value="Cycler 1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="140" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="PTYCPpzWRQGi11ZMApAE-13" value="1" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="470" y="110" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="PTYCPpzWRQGi11ZMApAE-14" value="2" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="470" y="130" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="PTYCPpzWRQGi11ZMApAE-15" value="3" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="470" y="150" width="20" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="PTYCPpzWRQGi11ZMApAE-16" value="Priority signal&lt;br&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="435" y="90" width="90" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="PTYCPpzWRQGi11ZMApAE-23" value="Cycler 1 sampled at 2.0ms" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="260" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="PTYCPpzWRQGi11ZMApAE-24" value="Cycler 2 sampled at 2.1ms" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="280" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="PTYCPpzWRQGi11ZMApAE-26" value="Cycler 3 sampled at 2.2ms" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="300" width="160" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
