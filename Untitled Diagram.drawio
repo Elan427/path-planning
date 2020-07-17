@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-07-17T18:03:25.528Z" agent="5.0 (X11; CrOS x86_64 13020.87.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.119 Safari/537.36" etag="cPLBTo5o2iU8yY1hShGH" version="13.4.6" type="github">
+<mxfile host="app.diagrams.net" modified="2020-07-17T18:08:04.891Z" agent="5.0 (X11; CrOS x86_64 13020.87.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.119 Safari/537.36" etag="CO3ZuPG8vmma7OgRMZKw" version="13.4.6" type="github">
   <diagram id="3He4Hd02jmimO1BY7AzF" name="Page-1">
     <mxGraphModel dx="782" dy="698" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -95,16 +95,31 @@
           <mxGeometry x="45" y="62" width="50" height="20" as="geometry" />
         </mxCell>
         <mxCell id="7oue5vu6Khn2l55E_7nm-69" value="" style="pointerEvents=1;verticalLabelPosition=bottom;shadow=0;dashed=0;align=center;html=1;verticalAlign=top;shape=mxgraph.electrical.signal_sources.signal_ground;" vertex="1" parent="1">
-          <mxGeometry x="600" y="120" width="45" height="30" as="geometry" />
+          <mxGeometry x="610" y="90" width="45" height="30" as="geometry" />
         </mxCell>
         <mxCell id="7oue5vu6Khn2l55E_7nm-70" value="GND&lt;br&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
-          <mxGeometry x="602.5" y="94" width="40" height="20" as="geometry" />
+          <mxGeometry x="612.5" y="64" width="40" height="20" as="geometry" />
         </mxCell>
         <mxCell id="7oue5vu6Khn2l55E_7nm-71" value="CAN_H&lt;br&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
           <mxGeometry x="440" y="62" width="60" height="20" as="geometry" />
         </mxCell>
         <mxCell id="7oue5vu6Khn2l55E_7nm-72" value="CAN_L&lt;br&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
           <mxGeometry x="510" y="62" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="7oue5vu6Khn2l55E_7nm-75" value="" style="verticalLabelPosition=bottom;html=1;fillColor=#A153A0;strokeColor=#ffffff;verticalAlign=top;align=center;points=[[0,0.5,0],[0.125,0.25,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[0.875,0.25,0],[1,0.5,0],[0.875,0.75,0],[0.75,1,0],[0.5,1,0],[0.125,0.75,0]];pointerEvents=1;shape=mxgraph.cisco_safe.compositeIcon;bgIcon=mxgraph.cisco_safe.design.blank_device;resIcon=mxgraph.cisco_safe.design.wlan_controller;rotation=-180;" vertex="1" parent="1">
+          <mxGeometry x="440" y="430" width="115" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="7oue5vu6Khn2l55E_7nm-76" value="" style="pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;fillColor=#434445;aspect=fixed;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;shape=mxgraph.vvd.ethernet_port;" vertex="1" parent="1">
+          <mxGeometry x="473" y="550" width="50" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="7oue5vu6Khn2l55E_7nm-77" value="" style="fontColor=#0066CC;verticalAlign=top;verticalLabelPosition=bottom;labelPosition=center;align=center;html=1;outlineConnect=0;fillColor=#CCCCCC;strokeColor=#6881B3;gradientColor=none;gradientDirection=north;strokeWidth=2;shape=mxgraph.networks.pc;" vertex="1" parent="1">
+          <mxGeometry x="455" y="690" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="7oue5vu6Khn2l55E_7nm-78" value="" style="html=1;outlineConnect=0;fillColor=#CCCCCC;strokeColor=#6881B3;gradientColor=none;gradientDirection=north;strokeWidth=2;shape=mxgraph.networks.bus;gradientColor=none;gradientDirection=north;fontColor=#ffffff;perimeter=backbonePerimeter;backboneSize=20;rotation=90;" vertex="1" parent="1">
+          <mxGeometry x="460" y="630" width="75" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="7oue5vu6Khn2l55E_7nm-79" value="Ethernet&lt;br&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="510" y="630" width="60" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
