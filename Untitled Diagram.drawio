@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2020-07-20T14:55:12.370Z" agent="5.0 (X11; CrOS x86_64 13020.87.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.119 Safari/537.36" etag="YGGSzDkfgfrmBVAywMMQ" version="13.4.6" type="github">
+<mxfile host="app.diagrams.net" modified="2020-07-27T14:45:28.036Z" agent="5.0 (X11; CrOS x86_64 13020.87.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.119 Safari/537.36" etag="ToqMqxCuhJbm-W47BXnK" version="13.4.9" type="github">
   <diagram id="3He4Hd02jmimO1BY7AzF" name="Page-1">
     <mxGraphModel dx="782" dy="698" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -115,8 +115,17 @@
         <mxCell id="7oue5vu6Khn2l55E_7nm-80" value="User&lt;br&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="1" vertex="1">
           <mxGeometry x="483" y="760" width="40" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="vwgCV_NApCsFwWDeuwj9-2" value="Mapping CANBus &lt;br&gt;onto Ethernet&lt;br&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+        <mxCell id="vwgCV_NApCsFwWDeuwj9-2" value="Mapping CANBus &lt;br&gt;onto Ethernet&lt;br&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" parent="1" vertex="1">
           <mxGeometry x="535" y="425" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="h4ajxfNXK4MeY3TJo0Ap-4" value="Access to individual cycler" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;" vertex="1" parent="1">
+          <mxGeometry x="220" y="450" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="h4ajxfNXK4MeY3TJo0Ap-5" value="" style="endArrow=classic;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="306" y="82" as="sourcePoint" />
+            <mxPoint x="306" y="442" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
